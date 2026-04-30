@@ -10,6 +10,8 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
+
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -28,12 +30,22 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandLogo(asset('images/logo-dark.svg'))
-            ->darkModeBrandLogo(asset('images/logo-white.svg'))
+            ->brandLogo(fn () => 
+                \App\Models\Setting::first()?->logo_admin_light 
+                ? \Illuminate\Support\Facades\Storage::disk('supabase')->url(\App\Models\Setting::first()->logo_admin_light) 
+                : asset('images/logo-dark.svg')
+            )
+            ->darkModeBrandLogo(fn () => 
+                \App\Models\Setting::first()?->logo_admin_dark 
+                ? \Illuminate\Support\Facades\Storage::disk('supabase')->url(\App\Models\Setting::first()->logo_admin_dark) 
+                : asset('images/logo-white.svg')
+            )
             ->brandLogoHeight('3rem')
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->maxContentWidth(Width::Full)
+
             ->navigationGroups([
                 'Kelas',
                 'Data Mentor',

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use App\Enums\UserRole;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\Resource;
@@ -38,14 +39,9 @@ class UserResource extends Resource
                     ->dehydrated(fn ($state) => filled($state))
                     ->maxLength(255),
                 Forms\Components\Select::make('role')
-                    ->options([
-                        'admin' => 'Admin',
-                        'instructor' => 'Instructor',
-                        'member' => 'Member',
-                        'user' => 'User',
-                    ])
+                    ->options(UserRole::class)
                     ->required()
-                    ->default('user'),
+                    ->default(UserRole::USER),
             ]);
     }
 
@@ -58,13 +54,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'admin' => 'danger',
-                        'instructor' => 'warning',
-                        'member' => 'success',
-                        'user' => 'gray',
-                    }),
+                    ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

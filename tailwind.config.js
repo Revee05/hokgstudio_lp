@@ -12,6 +12,12 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                'orange-hokg': '#FF9933',
+                'orange-light': '#ffa84aff',
+                'orange-light-2': '#FF7800',
+                'orange-dark': '#CC600080',
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },

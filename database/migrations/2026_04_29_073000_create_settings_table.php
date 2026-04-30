@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique();
-            $table->text('value')->nullable();
-            $table->string('label')->nullable();
-            $table->string('type')->default('text'); // text, textarea, select, etc.
+            $table->string('logo_header')->nullable();
+            $table->string('logo_admin_light')->nullable();
+            $table->string('logo_admin_dark')->nullable();
+            $table->text('footer_description')->nullable();
+            $table->json('social_links')->nullable();
+            $table->text('address')->nullable();
+            $table->json('website_links')->nullable();
+            $table->string('copyright_info')->nullable();
             $table->timestamps();
         });
     }

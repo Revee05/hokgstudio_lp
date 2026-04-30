@@ -32,7 +32,26 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user() ? [
+                    ...$request->user()->toArray(),
+                    'role_label' => $request->user()->role->getFrontendLabel(),
+                    'mentor' => [
+                        'profession' => $request->user()->mentor->profession ?? '',
+                        'city' => $request->user()->mentor->city ?? '',
+                        'bio' => $request->user()->mentor->bio ?? '',
+                        'experience' => $request->user()->mentor->experience ?? '',
+                        'certification' => $request->user()->mentor->certification ?? '',
+                        'specialties' => $request->user()->mentor->specialties ?? [],
+                        'avatar_url' => $request->user()->mentor && $request->user()->mentor->avatar 
+                            ? \Illuminate\Support\Facades\Storage::disk('supabase')->url($request->user()->mentor->avatar)
+                            : null,
+                    ],
+                ] : null,
+            ],
+            'settings' => [
+                'logo' => ($settings = \App\Models\Setting::first()) && $settings->logo_header
+                    ? \Illuminate\Support\Facades\Storage::disk('supabase')->url($settings->logo_header)
+                    : asset('images/logo_2.svg'),
             ],
         ];
     }

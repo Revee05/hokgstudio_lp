@@ -37,6 +37,20 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
+        if ($request->user()->role === \App\Enums\UserRole::MENTOR) {
+            $mentorData = $request->safe()->only(['profession', 'city', 'bio', 'experience', 'certification']);
+            
+            if ($request->hasFile('avatar')) {
+                $path = $request->file('avatar')->store('avatars', 'supabase');
+                $mentorData['avatar'] = $path;
+            }
+
+            $request->user()->mentor()->updateOrCreate(
+                ['user_id' => $request->user()->id],
+                $mentorData
+            );
+        }
+
         return Redirect::route('profile.edit');
     }
 
