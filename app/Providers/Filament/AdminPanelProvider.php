@@ -30,14 +30,16 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandLogo(fn () => 
-                \App\Models\Setting::first()?->logo_admin_light 
-                ? \Illuminate\Support\Facades\Storage::disk('supabase')->url(\App\Models\Setting::first()->logo_admin_light) 
+            ->brandLogo(
+                fn() =>
+                \App\Models\Setting::first()?->logo_admin_light
+                ? \Illuminate\Support\Facades\Storage::disk('supabase')->url(\App\Models\Setting::first()->logo_admin_dark)
                 : asset('images/logo-dark.svg')
             )
-            ->darkModeBrandLogo(fn () => 
-                \App\Models\Setting::first()?->logo_admin_dark 
-                ? \Illuminate\Support\Facades\Storage::disk('supabase')->url(\App\Models\Setting::first()->logo_admin_dark) 
+            ->darkModeBrandLogo(
+                fn() =>
+                \App\Models\Setting::first()?->logo_admin_dark
+                ? \Illuminate\Support\Facades\Storage::disk('supabase')->url(\App\Models\Setting::first()->logo_admin_light)
                 : asset('images/logo-white.svg')
             )
             ->brandLogoHeight('3rem')

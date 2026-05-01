@@ -12,6 +12,9 @@ class Course extends Model
         'mentor_id',
         'title',
         'description',
+        'thumbnail',
+        'price',
+        'status',
     ];
 
     public function mentor(): BelongsTo

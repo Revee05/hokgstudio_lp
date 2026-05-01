@@ -11,9 +11,9 @@ export default function Sidebar({ logo, isOpen, onClose }) {
         <aside className={`fixed inset-y-0 left-0 w-72 bg-white border-r border-gray-100 flex flex-col z-30 shadow-[4px_0_24px_rgba(0,0,0,0.02)] transition-transform duration-300 transform lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
             {/* Logo Section */}
             <div className="h-20 flex items-center px-8 border-b border-gray-50">
-                <Link href="/" className="flex items-center group">
+                <a href="/" className="flex items-center group">
                     <img src={logo} alt="Logo" className="h-10 transition-transform group-hover:scale-105" />
-                </Link>
+                </a>
             </div>
 
             {/* Navigation Section */}
@@ -29,7 +29,8 @@ export default function Sidebar({ logo, isOpen, onClose }) {
                 </SidebarItem>
 
                 <SidebarItem 
-                    href="#" 
+                    href={route('mentor.courses.index')} 
+                    active={route().current('mentor.courses.*')}
                     icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>}
                 >
                     My Courses

@@ -12,7 +12,7 @@ export default function UpdateProfileInformation({
 }) {
     const user = usePage().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
+    const { data, setData, post, transform, errors, processing, recentlySuccessful } =
         useForm({
             name: user.name,
             email: user.email,
@@ -27,10 +27,14 @@ export default function UpdateProfileInformation({
     const submit = (e) => {
         e.preventDefault();
 
-        // Menggunakan post dengan _method patch untuk support file upload
+        // Menggunakan transform untuk menyisipkan _method patch ke dalam body request
+        transform((data) => ({
+            ...data,
+            _method: 'patch',
+        }));
+
         post(route('profile.update'), {
             forceFormData: true,
-            _method: 'patch',
         });
     };
 

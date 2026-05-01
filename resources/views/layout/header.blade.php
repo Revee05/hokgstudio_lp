@@ -98,8 +98,13 @@
                         <button @click="open = !open" @click.away="open = false"
                             class="flex items-center gap-3 p-1 pr-4 rounded-full bg-gray-50 hover:bg-orange-50 transition-all border border-gray-100 group">
                             <div
-                                class="w-10 h-10 rounded-full bg-primary-gradient flex items-center justify-center text-white font-bold shadow-md group-hover:scale-105 transition-transform">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                class="w-10 h-10 rounded-full bg-primary-gradient flex items-center justify-center text-white font-bold shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+                                @if (Auth::user()->role === \App\Enums\UserRole::MENTOR && Auth::user()->mentor?->avatar)
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('supabase')->url(Auth::user()->mentor->avatar) }}"
+                                        alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                                @else
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                @endif
                             </div>
                             <div class="flex flex-col items-start leading-none">
                                 <span class="text-xs font-bold text-gray-900">{{ Auth::user()->name }}</span>
@@ -163,8 +168,13 @@
                 <!-- Mobile User Info -->
                 <div class="flex items-center gap-4 p-4 bg-orange-50 rounded-2xl mb-6">
                     <div
-                        class="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-white font-bold text-lg shadow-md">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        class="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-white font-bold text-lg shadow-md overflow-hidden">
+                        @if (Auth::user()->role === \App\Enums\UserRole::MENTOR && Auth::user()->mentor?->avatar)
+                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('supabase')->url(Auth::user()->mentor->avatar) }}"
+                                alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                        @else
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        @endif
                     </div>
                     <div>
                         <p class="text-base font-bold text-gray-900">{{ Auth::user()->name }}</p>
