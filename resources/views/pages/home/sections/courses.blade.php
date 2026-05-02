@@ -5,7 +5,7 @@
                 <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Kursus Terpopuler</h2>
                 <p class="text-gray-500">Pilih program unggulan yang sesuai dengan minat dan tujuan karirmu.</p>
             </div>
-            <a href="#" class="flex items-center gap-2 text-[#FF7A00] font-bold hover:gap-3 transition-all">
+            <a href="{{ route('courses.index') }}" class="flex items-center gap-2 text-[#FF7A00] font-bold hover:gap-3 transition-all">
                 Lihat Semua
                 <i data-lucide="arrow-right" class="w-5 h-5"></i>
             </a>

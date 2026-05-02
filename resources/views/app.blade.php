@@ -10,6 +10,15 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        @php
+            $settings = \App\Models\Setting::first();
+            $favicon = $settings?->favicon 
+                ? \Illuminate\Support\Facades\Storage::disk('supabase')->url($settings->favicon) 
+                : asset('favicon.ico');
+        @endphp
+        
+        <link rel="icon" type="image/x-icon" href="{{ $favicon }}">
+
         <!-- Scripts -->
         @routes
         @viteReactRefresh

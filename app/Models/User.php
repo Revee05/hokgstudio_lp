@@ -13,6 +13,8 @@ use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[Fillable(['name', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
@@ -20,6 +22,16 @@ class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class)->withTimestamps();
+    }
+
+    public function lessonCompletions(): HasMany
+    {
+        return $this->hasMany(LessonCompletion::class);
+    }
 
     public function mentor(): HasOne
     {

@@ -32,6 +32,14 @@ class ProfileUpdateRequest extends FormRequest
             'experience' => ['nullable', 'string', 'max:255'],
             'certification' => ['nullable', 'string'],
             'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'contact' => ['nullable', 'string', 'max:20'],
+            'gender' => ['nullable', 'string', 'in:male,female'],
+            'birthdate' => ['nullable', 'date'],
+            'address' => ['nullable', 'string'],
+            'specialties' => ['nullable', 'array'],
+            'instagram' => ['nullable', 'string', 'max:255'],
+            'linkedin' => ['nullable', 'string', 'max:255'],
+            'website' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

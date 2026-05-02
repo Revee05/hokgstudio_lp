@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const handleImageError = () => {
@@ -14,7 +14,9 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
     return (
         <>
-            <Head title="Welcome" />
+            <Head title="Welcome">
+                <link rel="icon" type="image/x-icon" href={usePage().props.settings.favicon} />
+            </Head>
             <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
                 <img
                     id="background"

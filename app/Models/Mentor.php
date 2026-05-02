@@ -25,13 +25,17 @@ class Mentor extends Model
         'avatar',
         'cv',
         'specialties',
+        'social_links',
         'status',
     ];
+
+    protected $appends = ['avatar_url', 'cv_url'];
 
     protected function casts(): array
     {
         return [
             'specialties' => 'array',
+            'social_links' => 'array',
             'status' => MentorStatus::class,
             'gender' => Gender::class,
             'birthdate' => 'date',
@@ -81,6 +85,11 @@ class Mentor extends Model
         return $this->hasMany(Course::class);
     }
 
+    public function bundles(): HasMany
+    {
+        return $this->hasMany(CourseBundle::class);
+    }
+
     /**
      * Get the public URL for the avatar from Supabase.
      */
@@ -90,7 +99,7 @@ class Mentor extends Model
             return null;
         }
 
-        return config('filesystems.disks.supabase.url') . '/' . config('filesystems.disks.supabase.bucket') . '/' . $this->avatar;
+        return rtrim(config('filesystems.disks.supabase.url'), '/') . '/' . ltrim($this->avatar, '/');
     }
 
     /**
@@ -102,6 +111,6 @@ class Mentor extends Model
             return null;
         }
 
-        return config('filesystems.disks.supabase.url') . '/' . config('filesystems.disks.supabase.bucket') . '/' . $this->cv;
+        return rtrim(config('filesystems.disks.supabase.url'), '/') . '/' . ltrim($this->cv, '/');
     }
 }

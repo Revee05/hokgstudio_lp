@@ -52,6 +52,12 @@ class SettingResource extends Resource
                                     ->imageEditor()
                                     ->disk('supabase')
                                     ->directory('settings'),
+                                Forms\Components\FileUpload::make('favicon')
+                                    ->label('Favicon (Website Icon)')
+                                    ->image()
+                                    ->imageEditor()
+                                    ->disk('supabase')
+                                    ->directory('settings'),
                             ]),
                         ]),
                     

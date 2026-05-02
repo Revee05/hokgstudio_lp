@@ -1,6 +1,6 @@
 import Sidebar from '@/Components/Dashboard/Sidebar';
 import TopNavbar from '@/Components/Dashboard/TopNavbar';
-import { usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -9,6 +9,9 @@ export default function AuthenticatedLayout({ header, children }) {
 
     return (
         <div className="min-h-screen bg-[#F8FAFC] dark:bg-gray-900 flex">
+            <Head>
+                <link rel="icon" type="image/x-icon" href={settings.favicon} />
+            </Head>
             {/* Sidebar Component (Desktop & Mobile) */}
             <Sidebar 
                 logo={settings.logo} 

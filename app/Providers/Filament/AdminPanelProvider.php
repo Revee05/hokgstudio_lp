@@ -33,14 +33,22 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(
                 fn() =>
                 \App\Models\Setting::first()?->logo_admin_light
+                // ini pakai logo dark supaya bisa dilihat saat mode light
                 ? \Illuminate\Support\Facades\Storage::disk('supabase')->url(\App\Models\Setting::first()->logo_admin_dark)
                 : asset('images/logo-dark.svg')
             )
             ->darkModeBrandLogo(
+                // ini pakai logo light supaya bisa dilihat saat mode dark
                 fn() =>
                 \App\Models\Setting::first()?->logo_admin_dark
                 ? \Illuminate\Support\Facades\Storage::disk('supabase')->url(\App\Models\Setting::first()->logo_admin_light)
                 : asset('images/logo-white.svg')
+            )
+            ->favicon(
+                fn() =>
+                \App\Models\Setting::first()?->favicon
+                ? \Illuminate\Support\Facades\Storage::disk('supabase')->url(\App\Models\Setting::first()->favicon)
+                : asset('icon_website.svg')
             )
             ->brandLogoHeight('3rem')
             ->colors([

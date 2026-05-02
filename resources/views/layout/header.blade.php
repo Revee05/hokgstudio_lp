@@ -10,8 +10,8 @@
             <!-- Logo Area -->
             <div class="flex items-center gap-2 flex-1">
                 <a href="/" class="flex items-center gap-2 group">
-                    @if($settings && $settings->logo_header)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::disk('supabase')->url($settings->logo_header) }}"
+                    @if($settings && $settings->logo_header_url)
+                        <img src="{{ $settings->logo_header_url }}"
                             alt="Logo" class="h-10 md:h-12 transition-transform group-hover:scale-105">
                     @else
                         <img src="{{ asset('images/logo_2.svg') }}" alt="Hokgstudio Logo"
@@ -41,7 +41,7 @@
                         x-transition:enter-end="opacity-100 translate-y-0"
                         class="absolute top-full -left-4 pt-2 w-48 z-50">
                         <div class="bg-white rounded-2xl shadow-xl border border-gray-50 py-2 overflow-hidden">
-                            <a href="#"
+                            <a href="{{ route('courses.index') }}"
                                 class="block px-4 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-[#FF7A00]">Semua
                                 Kelas</a>
                             <a href="#"
@@ -99,8 +99,8 @@
                             class="flex items-center gap-3 p-1 pr-4 rounded-full bg-gray-50 hover:bg-orange-50 transition-all border border-gray-100 group">
                             <div
                                 class="w-10 h-10 rounded-full bg-primary-gradient flex items-center justify-center text-white font-bold shadow-md group-hover:scale-105 transition-transform overflow-hidden">
-                                @if (Auth::user()->role === \App\Enums\UserRole::MENTOR && Auth::user()->mentor?->avatar)
-                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('supabase')->url(Auth::user()->mentor->avatar) }}"
+                                @if (Auth::user()->role === \App\Enums\UserRole::MENTOR && Auth::user()->mentor?->avatar_url)
+                                    <img src="{{ Auth::user()->mentor->avatar_url }}"
                                         alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
                                 @else
                                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -169,9 +169,9 @@
                 <div class="flex items-center gap-4 p-4 bg-orange-50 rounded-2xl mb-6">
                     <div
                         class="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-white font-bold text-lg shadow-md overflow-hidden">
-                        @if (Auth::user()->role === \App\Enums\UserRole::MENTOR && Auth::user()->mentor?->avatar)
-                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('supabase')->url(Auth::user()->mentor->avatar) }}"
-                                alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                    @if (Auth::user()->role === \App\Enums\UserRole::MENTOR && Auth::user()->mentor?->avatar_url)
+                        <img src="{{ Auth::user()->mentor->avatar_url }}"
+                            alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
                         @else
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         @endif
@@ -201,7 +201,7 @@
                         :class="open ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="open" x-collapse class="pl-4 pr-2 py-2 space-y-1">
-                    <a href="#"
+                    <a href="{{ route('courses.index') }}"
                         class="block px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-[#FF7A00] hover:bg-orange-50 rounded-xl transition-all">Semua
                         Kelas</a>
                     <a href="#"

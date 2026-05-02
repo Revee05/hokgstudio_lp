@@ -21,6 +21,14 @@ export default function UpdateProfileInformation({
             bio: user.mentor?.bio || '',
             experience: user.mentor?.experience || '',
             certification: user.mentor?.certification || '',
+            contact: user.mentor?.contact || '',
+            gender: user.mentor?.gender || '',
+            birthdate: user.mentor?.birthdate || '',
+            address: user.mentor?.address || '',
+            specialties: user.mentor?.specialties ? user.mentor.specialties.join(', ') : '',
+            instagram: user.mentor?.social_links?.instagram || '',
+            linkedin: user.mentor?.social_links?.linkedin || '',
+            website: user.mentor?.social_links?.website || '',
             avatar: null,
         });
 
@@ -28,9 +36,13 @@ export default function UpdateProfileInformation({
         e.preventDefault();
 
         // Menggunakan transform untuk menyisipkan _method patch ke dalam body request
+        // dan mengubah specialties string menjadi array
         transform((data) => ({
             ...data,
             _method: 'patch',
+            specialties: data.specialties ? data.specialties.split(',').map(s => s.trim()) : [],
+            // Group social links back for the controller if needed, 
+            // though the controller currently expects individual fields
         }));
 
         post(route('profile.update'), {
@@ -162,6 +174,110 @@ export default function UpdateProfileInformation({
                                 />
                                 <InputError className="mt-2" message={errors.certification} />
                             </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <InputLabel htmlFor="contact" value="Contact / Phone" />
+                                <TextInput
+                                    id="contact"
+                                    className="mt-1 block w-full"
+                                    value={data.contact}
+                                    onChange={(e) => setData('contact', e.target.value)}
+                                    placeholder="e.g. 08123456789"
+                                />
+                                <InputError className="mt-2" message={errors.contact} />
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="gender" value="Gender" />
+                                <select
+                                    id="gender"
+                                    className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300"
+                                    value={data.gender}
+                                    onChange={(e) => setData('gender', e.target.value)}
+                                >
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                <InputError className="mt-2" message={errors.gender} />
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="birthdate" value="Birthdate" />
+                                <TextInput
+                                    id="birthdate"
+                                    type="date"
+                                    className="mt-1 block w-full"
+                                    value={data.birthdate}
+                                    onChange={(e) => setData('birthdate', e.target.value)}
+                                />
+                                <InputError className="mt-2" message={errors.birthdate} />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <InputLabel htmlFor="instagram" value="Instagram URL" />
+                                <TextInput
+                                    id="instagram"
+                                    className="mt-1 block w-full"
+                                    value={data.instagram}
+                                    onChange={(e) => setData('instagram', e.target.value)}
+                                    placeholder="https://instagram.com/yourname"
+                                />
+                                <InputError className="mt-2" message={errors.instagram} />
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="linkedin" value="LinkedIn URL" />
+                                <TextInput
+                                    id="linkedin"
+                                    className="mt-1 block w-full"
+                                    value={data.linkedin}
+                                    onChange={(e) => setData('linkedin', e.target.value)}
+                                    placeholder="https://linkedin.com/in/yourname"
+                                />
+                                <InputError className="mt-2" message={errors.linkedin} />
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="website" value="Personal Website" />
+                                <TextInput
+                                    id="website"
+                                    className="mt-1 block w-full"
+                                    value={data.website}
+                                    onChange={(e) => setData('website', e.target.value)}
+                                    placeholder="https://yourwebsite.com"
+                                />
+                                <InputError className="mt-2" message={errors.website} />
+                            </div>
+                        </div>
+
+                        <div>
+                            <InputLabel htmlFor="specialties" value="Specialties (Comma separated)" />
+                            <TextInput
+                                id="specialties"
+                                className="mt-1 block w-full"
+                                value={data.specialties}
+                                onChange={(e) => setData('specialties', e.target.value)}
+                                placeholder="e.g. Visual Art, UI Design, Photography"
+                            />
+                            <InputError className="mt-2" message={errors.specialties} />
+                        </div>
+
+                        <div>
+                            <InputLabel htmlFor="address" value="Full Address" />
+                            <textarea
+                                id="address"
+                                className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300"
+                                value={data.address}
+                                onChange={(e) => setData('address', e.target.value)}
+                                rows="2"
+                                placeholder="Your complete address..."
+                            ></textarea>
+                            <InputError className="mt-2" message={errors.address} />
                         </div>
 
                         <div>

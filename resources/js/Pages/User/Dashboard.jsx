@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, usePage, Link } from '@inertiajs/react';
 
-export default function UserDashboard() {
+export default function UserDashboard({ courses = [] }) {
     const user = usePage().props.auth.user;
 
     return (
@@ -34,12 +34,12 @@ export default function UserDashboard() {
                                 <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.382 0z"/></svg>
                             </div>
                             <h3 className="font-bold text-gray-400 text-xs uppercase tracking-widest mb-4">Courses Enrolled</h3>
-                            <p className="text-4xl font-black text-gray-900 dark:text-gray-100">0</p>
+                            <p className="text-4xl font-black text-gray-900 dark:text-gray-100">{courses.length}</p>
                             <div className="mt-4 flex items-center gap-2">
                                 <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                    <div className="w-0 h-full bg-blue-500 rounded-full"></div>
+                                    <div className="w-[10%] h-full bg-blue-500 rounded-full"></div>
                                 </div>
-                                <span className="text-xs font-bold text-gray-400">0% Average</span>
+                                <span className="text-xs font-bold text-gray-400">10% Average</span>
                             </div>
                         </div>
                         
@@ -74,8 +74,42 @@ export default function UserDashboard() {
                                 </button>
                             </div>
 
-                            <div className="p-10 text-center border-2 border-dashed border-gray-100 dark:border-gray-700 rounded-3xl">
-                                <p className="text-gray-400">You haven't joined any courses yet. Start your learning journey now!</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {courses.length === 0 ? (
+                                    <div className="md:col-span-3 p-10 text-center border-2 border-dashed border-gray-100 dark:border-gray-700 rounded-3xl">
+                                        <p className="text-gray-400">You haven't joined any courses yet. Start your learning journey now!</p>
+                                    </div>
+                                ) : (
+                                    courses.map((course) => (
+                                        <div key={course.id} className="bg-gray-50 dark:bg-gray-900/50 rounded-3xl p-6 border border-gray-100 dark:border-gray-800 group hover:shadow-xl hover:shadow-orange-100/20 transition-all duration-300">
+                                            <div className="aspect-video rounded-2xl bg-gray-200 mb-4 overflow-hidden relative">
+                                                {course.thumbnail_url ? (
+                                                    <img src={course.thumbnail_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                                    </div>
+                                                )}
+                                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <Link 
+                                                        href={route('courses.learn', course.id)}
+                                                        className="bg-white text-gray-900 px-6 py-2 rounded-xl font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition-all"
+                                                    >
+                                                        Continue
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                            <h4 className="font-black text-gray-900 dark:text-white mb-1 truncate">{course.title}</h4>
+                                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-4">Mentor: {course.mentor?.name}</p>
+                                            <div className="flex items-center gap-2">
+                                                <div className="flex-1 h-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                                    <div className="w-[30%] h-full bg-orange-500"></div>
+                                                </div>
+                                                <span className="text-[9px] font-black text-gray-400">30%</span>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
                             </div>
                         </div>
                     </div>

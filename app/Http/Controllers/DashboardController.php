@@ -15,7 +15,9 @@ class DashboardController extends Controller
         return match ($user->role) {
             UserRole::ADMIN => redirect('/admin'),
             UserRole::MENTOR => Inertia::render('Mentor/Dashboard'),
-            UserRole::MEMBER, UserRole::USER => Inertia::render('User/Dashboard'),
+            UserRole::MEMBER, UserRole::USER => Inertia::render('User/Dashboard', [
+                'courses' => $user->courses()->with(['mentor', 'categories'])->get()
+            ]),
             default => Inertia::render('Dashboard'),
         };
     }

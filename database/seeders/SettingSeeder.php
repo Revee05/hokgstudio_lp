@@ -28,6 +28,9 @@ class SettingSeeder extends Seeder
                     ['label' => 'Portfolio', 'url' => 'https://hokgstudio.com/portfolio'],
                     ['label' => 'Blog', 'url' => 'https://hokgstudio.com/blog'],
                 ],
+                'favicon' => null,
+                'logo_admin_light' => null,
+                'logo_admin_dark' => null,
             ]
         );
     }

@@ -38,7 +38,16 @@ class ProfileController extends Controller
         $request->user()->save();
 
         if ($request->user()->role === \App\Enums\UserRole::MENTOR) {
-            $mentorData = $request->safe()->only(['profession', 'city', 'bio', 'experience', 'certification']);
+            $mentorData = $request->safe()->only([
+                'profession', 'city', 'bio', 'experience', 'certification',
+                'contact', 'gender', 'birthdate', 'address', 'specialties'
+            ]);
+
+            $mentorData['social_links'] = [
+                'instagram' => $request->instagram,
+                'linkedin' => $request->linkedin,
+                'website' => $request->website,
+            ];
             
             if ($request->hasFile('avatar')) {
                 $path = $request->file('avatar')->store('avatars', 'supabase');
