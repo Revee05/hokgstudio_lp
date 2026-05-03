@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import { useState } from 'react';
+import RichTextEditor from '@/Components/RichTextEditor';
 
 export default function Form({ auth, bundle, courses, categories = [] }) {
     const isEdit = !!bundle;
@@ -53,7 +54,11 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
                 </h2>
             }
         >
-            <Head title={isEdit ? 'Edit Paket' : 'Buat Paket'} />
+            <Head>
+                <title>{isEdit ? 'Edit Paket' : 'Buat Paket'}</title>
+                <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+                <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+            </Head>
 
             <div className="py-12">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
@@ -85,11 +90,10 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
 
                             <div>
                                 <InputLabel htmlFor="description" value="Deskripsi Bundle" />
-                                <textarea
-                                    id="description"
-                                    className="mt-1 block w-full rounded-2xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm min-h-[120px]"
+                                <RichTextEditor
                                     value={data.description}
-                                    onChange={e => setData('description', e.target.value)}
+                                    onChange={val => setData('description', val)}
+                                    placeholder="Jelaskan tentang paket ini..."
                                 />
                                 <InputError message={errors.description} className="mt-1" />
                             </div>

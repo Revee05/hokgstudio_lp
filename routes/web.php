@@ -35,6 +35,8 @@ Route::get('/mentor', [MentorController::class, 'index'])->name('mentor.index');
 
 // courses listing
 Route::get('/courses', [\App\Http\Controllers\CourseController::class, 'index'])->name('courses.index');
+Route::get('/courses/{course}', [\App\Http\Controllers\CourseController::class, 'show'])->name('courses.show');
+Route::get('/bundles/{bundle}', [\App\Http\Controllers\CourseController::class, 'showBundle'])->name('bundles.show');
 
 // authenticated dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])

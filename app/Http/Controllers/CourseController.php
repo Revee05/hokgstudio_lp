@@ -55,4 +55,15 @@ class CourseController extends Controller
 
         return view('pages.courses.index', compact('bundles', 'courses', 'categories', 'search', 'categoryName'));
     }
+    public function show(Course $course)
+    {
+        $course->load(['mentor.user', 'categories', 'modules.lessons']);
+        return view('pages.courses.show', compact('course'));
+    }
+
+    public function showBundle(CourseBundle $bundle)
+    {
+        $bundle->load(['mentor.user', 'categories', 'courses.mentor.user', 'courses.categories']);
+        return view('pages.courses.bundle_show', compact('bundle'));
+    }
 }

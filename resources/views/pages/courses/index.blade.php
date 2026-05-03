@@ -4,44 +4,77 @@
     <div class="bg-[#FCFCFC] pt-32 pb-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header & Search -->
-            <div class="text-center mb-16">
+            <!-- Header -->
+            <div class="text-center mb-12">
                 <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
                     Temukan <span class="text-gradient">Skill Baru</span> untuk Masa Depanmu
                 </h1>
-                <p class="text-gray-500 max-w-2xl mx-auto mb-10 text-lg">
+                <p class="text-gray-500 max-w-2xl mx-auto text-lg">
                     Pilih program pelatihan terbaik yang dirancang oleh mentor profesional untuk membantu percepatan karirmu.
                 </p>
-
-                <!-- Search Bar -->
-                <form action="{{ route('courses.index') }}" method="GET" class="max-w-3xl mx-auto relative group">
-                    <div class="absolute inset-y-0 left-6 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#FF7A00] transition-colors">
-                        <i data-lucide="search" class="w-6 h-6"></i>
-                    </div>
-                    <input type="text" name="search" value="{{ $search }}"
-                        placeholder="Cari kelas atau paket pelatihan..."
-                        class="w-full pl-16 pr-32 py-5 bg-white rounded-2xl shadow-xl shadow-orange-100/20 border-none focus:ring-2 focus:ring-[#FF7A00] transition-all text-lg placeholder:text-gray-400">
-                    <button type="submit"
-                        class="absolute right-3 inset-y-3 bg-primary-gradient text-white px-8 rounded-xl font-bold shadow-lg hover:shadow-orange-200 transition-all active:scale-95">
-                        Cari
-                    </button>
-                    @if($categoryName)
-                        <input type="hidden" name="category" value="{{ $categoryName }}">
-                    @endif
-                </form>
             </div>
 
-            <!-- Categories Filter -->
-            <div class="flex flex-wrap justify-center gap-3 mb-20">
-                <a href="{{ route('courses.index', ['search' => $search]) }}"
-                    class="px-6 py-2.5 rounded-full text-sm font-bold transition-all {{ !$categoryName ? 'bg-primary-gradient text-white shadow-lg shadow-orange-200' : 'bg-white text-gray-600 hover:bg-orange-50 hover:text-[#FF7A00] border border-gray-100' }}">
-                    Semua Kategori
-                </a>
-                @foreach ($categories as $cat)
-                    <a href="{{ route('courses.index', ['category' => $cat, 'search' => $search]) }}"
-                        class="px-6 py-2.5 rounded-full text-sm font-bold transition-all {{ $categoryName == $cat ? 'bg-primary-gradient text-white shadow-lg shadow-orange-200' : 'bg-white text-gray-600 hover:bg-orange-50 hover:text-[#FF7A00] border border-gray-100' }}">
-                        {{ $cat }}
+            <!-- Search & Filter Bar -->
+            <div x-data="{ open: false }" class="mb-20">
+                <div class="flex flex-wrap justify-center items-center gap-4">
+                    <!-- Search Bar -->
+                    <form action="{{ route('courses.index') }}" method="GET" class="w-full md:w-auto md:flex-1 max-w-2xl relative group">
+                        <div class="absolute inset-y-0 left-6 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#FF7A00] transition-colors">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </div>
+                        <input type="text" name="search" value="{{ $search }}"
+                            placeholder="Cari kelas atau paket pelatihan..."
+                            class="w-full pl-16 pr-32 py-5 bg-white rounded-2xl shadow-xl shadow-orange-100/20 border-none focus:ring-2 focus:ring-[#FF7A00] transition-all text-lg placeholder:text-gray-400">
+                        <button type="submit"
+                            class="absolute right-3 inset-y-3 bg-primary-gradient text-white px-8 rounded-xl font-bold shadow-lg hover:shadow-orange-200 transition-all active:scale-95">
+                            Cari
+                        </button>
+                        @if($categoryName)
+                            <input type="hidden" name="category" value="{{ $categoryName }}">
+                        @endif
+                    </form>
+
+                    <!-- Categories Filter Button -->
+                    <div class="flex items-center gap-2">
+                        <button @click="open = !open" 
+                            class="flex items-center gap-2 px-8 py-[1.125rem] bg-white border {{ $categoryName ? 'border-[#FF7A00] ring-4 ring-orange-50' : 'border-gray-100' }} rounded-2xl shadow-sm hover:shadow-md transition-all font-bold text-gray-700">
+                            <i data-lucide="filter" class="w-5 h-5 {{ $categoryName ? 'text-[#FF7A00]' : 'text-gray-400' }}"></i>
+                            <span>{{ $categoryName ?: 'Filter Kategori' }}</span>
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
+                        </button>
+                        
+                        @if($categoryName)
+                            <a href="{{ route('courses.index', ['search' => $search]) }}" 
+                                class="p-[1.125rem] bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-red-500 transition-colors shadow-sm"
+                                title="Hapus Filter">
+                                <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Categories Expansion -->
+                <div x-show="open" 
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform -translate-y-4"
+                    x-transition:enter-end="opacity-100 transform translate-y-0"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 transform translate-y-0"
+                    x-transition:leave-end="opacity-0 transform -translate-y-4"
+                    class="mt-6 flex flex-wrap justify-center gap-3 max-w-4xl mx-auto"
+                    x-cloak>
+                    
+                    <a href="{{ route('courses.index', ['search' => $search]) }}"
+                        class="px-6 py-2.5 rounded-full text-sm font-bold transition-all {{ !$categoryName ? 'bg-primary-gradient text-white shadow-lg shadow-orange-200' : 'bg-white text-gray-600 hover:bg-orange-50 hover:text-[#FF7A00] border border-gray-100' }}">
+                        Semua Kategori
                     </a>
-                @endforeach
+                    @foreach ($categories as $cat)
+                        <a href="{{ route('courses.index', ['category' => $cat, 'search' => $search]) }}"
+                            class="px-6 py-2.5 rounded-full text-sm font-bold transition-all {{ $categoryName == $cat ? 'bg-primary-gradient text-white shadow-lg shadow-orange-200' : 'bg-white text-gray-600 hover:bg-orange-50 hover:text-[#FF7A00] border border-gray-100' }}">
+                            {{ $cat }}
+                        </a>
+                    @endforeach
+                </div>
             </div>
 
             <!-- Section 1: Paket Kelas (Bundles) -->
@@ -62,21 +95,17 @@
                 @else
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         @foreach ($bundles as $bundle)
-                            <div class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full">
+                            <div class="group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full cursor-pointer">
+                                <a href="{{ route('bundles.show', $bundle->id) }}" class="absolute inset-0 z-30"></a>
                                 <div class="relative aspect-[16/10] overflow-hidden">
                                     <img src="{{ $bundle->thumbnail_url ?: asset('images/default_bundle.png') }}"
                                         alt="{{ $bundle->title }}"
                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                    <div class="absolute top-4 left-4 bg-[#FF7A00] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-lg">
+                                    <div class="absolute top-4 left-4 bg-[#FF7A00] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-lg z-20">
                                         Bundle Hemat
                                     </div>
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                                        <button class="w-full py-3 bg-white text-[#FF7A00] font-bold rounded-xl transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                                            Lihat Detail
-                                        </button>
-                                    </div>
                                 </div>
-                                <div class="p-6 flex flex-col flex-1">
+                                <div class="p-6 flex flex-col flex-1 relative z-20">
                                     <div class="flex flex-wrap items-center gap-2 mb-3">
                                         <div class="flex text-yellow-400">
                                             <i data-lucide="star" class="w-4 h-4 fill-current"></i>
@@ -146,12 +175,13 @@
                 @else
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         @foreach ($courses as $course)
-                            <div class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full">
+                            <div class="group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full cursor-pointer">
+                                <a href="{{ route('courses.show', $course->id) }}" class="absolute inset-0 z-30"></a>
                                 <div class="relative aspect-video overflow-hidden">
                                     <img src="{{ $course->thumbnail_url ?: asset('images/default_course.png') }}"
                                         alt="{{ $course->title }}"
                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                    <div class="absolute top-4 left-4 flex flex-col gap-2">
+                                    <div class="absolute top-4 left-4 flex flex-col gap-2 z-20">
                                         <div class="bg-white/90 backdrop-blur-sm text-gray-900 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm w-fit">
                                             @if($course->type === 'product')
                                                 Product
@@ -161,7 +191,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-6 flex flex-col flex-1">
+                                <div class="p-6 flex flex-col flex-1 relative z-20">
                                     <div class="flex items-center gap-2 mb-3">
                                         <span class="text-[10px] font-bold text-[#FF7A00] bg-orange-50 px-2 py-1 rounded">
                                             {{ $course->categories->first()->name ?? 'Umum' }}
@@ -186,9 +216,9 @@
                                         <p class="text-lg font-extrabold text-[#FF7A00]">
                                             Rp {{ number_format($course->price, 0, ',', '.') }}
                                         </p>
-                                        <button class="p-2 rounded-full bg-gray-50 text-gray-400 group-hover:bg-[#FF7A00] group-hover:text-white transition-all">
-                                            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                                        </button>
+                                        <div class="p-2 rounded-full bg-gray-50 text-gray-400 group-hover:bg-[#FF7A00] group-hover:text-white transition-all">
+                                            <i data-lucide="eye" class="w-4 h-4"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
