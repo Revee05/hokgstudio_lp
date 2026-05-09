@@ -41,7 +41,7 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
     const submit = (e) => {
         e.preventDefault();
         if (isEdit) {
-            patch(route('mentor.bundles.update', bundle.id));
+            patch(route('mentor.bundles.update', bundle.slug));
         } else {
             post(route('mentor.bundles.store'));
         }
@@ -51,7 +51,7 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                     {isEdit ? `Edit Paket: ${bundle.title}` : 'Buat Paket Kelas Baru'}
                 </h2>
             }
@@ -106,7 +106,7 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
                             </div>
                         )}
                         {/* Basic Info Card */}
-                        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 space-y-6">
+                        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-6">
                             <h3 className="font-black text-xs uppercase tracking-widest text-gray-400">Informasi Paket</h3>
 
                             <div>
@@ -160,7 +160,7 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
                         </div>
 
                         {/* Categories Card */}
-                        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 space-y-6">
+                        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-6">
                             <h3 className="font-black text-xs uppercase tracking-widest text-gray-400">Kategori Bundle</h3>
 
                             <div>
@@ -179,7 +179,7 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
                                                     className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${
                                                         isSelected
                                                             ? 'bg-orange-500 border-orange-500 text-white shadow-md'
-                                                            : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-500 hover:border-orange-300'
+                                                            : 'bg-white border-gray-200 text-gray-500 hover:border-orange-300'
                                                     }`}
                                                 >
                                                     {cat.name}
@@ -191,7 +191,7 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
                                 <InputError message={errors.category_ids} className="mt-1" />
                             </div>
 
-                            <div className="pt-4 border-t border-gray-50 dark:border-gray-700">
+                            <div className="pt-4 border-t border-gray-50">
                                 <InputLabel htmlFor="new_categories" value="Tambah Kategori Baru secara Manual" />
                                 <TextInput
                                     id="new_categories"
@@ -206,7 +206,7 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
                         </div>
 
                         {/* Course Picker Card */}
-                        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-8">
+                        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                             <div className="flex justify-between items-center mb-5">
                                 <div>
                                     <h3 className="font-black text-xs uppercase tracking-widest text-gray-400">Pilih Kelas *</h3>
@@ -231,15 +231,15 @@ export default function Form({ auth, bundle, courses, categories = [] }) {
                                                 onClick={() => toggleCourse(course.id)}
                                                 className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all ${
                                                     selected
-                                                        ? 'border-orange-400 bg-orange-50 dark:bg-orange-900/20'
-                                                        : 'border-gray-100 dark:border-gray-700 hover:border-orange-200'
+                                                        ? 'border-orange-400 bg-orange-50'
+                                                        : 'border-gray-100 hover:border-orange-200'
                                                 }`}
                                             >
                                                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${selected ? 'border-orange-500 bg-orange-500' : 'border-gray-300'}`}>
                                                     {selected && <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>}
                                                 </div>
                                                 <div className="min-w-0">
-                                                    <p className="font-bold text-sm text-gray-900 dark:text-white truncate">{course.title}</p>
+                                                    <p className="font-bold text-sm text-gray-900 truncate">{course.title}</p>
                                                     <p className="text-[10px] text-gray-400 uppercase font-bold">{course.type}</p>
                                                 </div>
                                             </button>

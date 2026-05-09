@@ -72,7 +72,7 @@ export default function CourseForm({ course = null, categories = [] }) {
                 ...data,
                 _method: 'patch',
             }));
-            post(route('mentor.courses.update', course.id), {
+            post(route('mentor.courses.update', course.slug), {
                 forceFormData: true,
             });
         } else {
@@ -82,15 +82,15 @@ export default function CourseForm({ course = null, categories = [] }) {
         }
     };
 
-    const selectClasses = "mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-2xl shadow-sm";
-    const textareaClasses = "mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-2xl shadow-sm";
+    const selectClasses = "mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-2xl shadow-sm";
+    const textareaClasses = "mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-2xl shadow-sm";
 
     return (
         <form onSubmit={submit} className="space-y-8">
             {/* Section 0: Course Type */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div className="md:col-span-1">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Jenis Kelas</h3>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">Jenis Kelas</h3>
                     <p className="text-sm text-gray-500">Tentukan apakah kelas ini berupa produk digital atau aktivitas terjadwal.</p>
                 </div>
                 <div className="md:col-span-2">
@@ -101,10 +101,10 @@ export default function CourseForm({ course = null, categories = [] }) {
                             className={`flex-1 p-4 rounded-2xl border-2 transition-all text-left ${
                                 data.type === 'activity'
                                     ? 'border-[#FF7A00] bg-orange-50'
-                                    : 'border-gray-100 bg-white dark:bg-gray-800'
+                                    : 'border-gray-100 bg-white'
                             }`}
                         >
-                            <div className="font-bold text-gray-900 dark:text-white">Activity</div>
+                            <div className="font-bold text-gray-900">Activity</div>
                             <div className="text-xs text-gray-500">Kelas terjadwal (Workshop, Kursus, dll)</div>
                         </button>
                         <button
@@ -113,10 +113,10 @@ export default function CourseForm({ course = null, categories = [] }) {
                             className={`flex-1 p-4 rounded-2xl border-2 transition-all text-left ${
                                 data.type === 'product'
                                     ? 'border-[#FF7A00] bg-orange-50'
-                                    : 'border-gray-100 bg-white dark:bg-gray-800'
+                                    : 'border-gray-100 bg-white'
                             }`}
                         >
-                            <div className="font-bold text-gray-900 dark:text-white">Product</div>
+                            <div className="font-bold text-gray-900">Product</div>
                             <div className="text-xs text-gray-500">Produk digital (E-book, Video, dll)</div>
                         </button>
                     </div>
@@ -133,7 +133,7 @@ export default function CourseForm({ course = null, categories = [] }) {
             {/* Section 1: Category & Basic Info */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div className="md:col-span-1">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Kategori & Info Dasar</h3>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">Kategori & Info Dasar</h3>
                     <p className="text-sm text-gray-500">Pilih kategori kelas dan isi informasi dasar kelas yang akan dibuat.</p>
                 </div>
                 <div className="md:col-span-2 space-y-6">
@@ -149,7 +149,7 @@ export default function CourseForm({ course = null, categories = [] }) {
                                     className={`px-4 py-2 rounded-xl text-xs font-bold border-2 transition-all ${
                                         data.category_ids.includes(cat.id)
                                             ? 'bg-orange-500 text-white border-orange-500 shadow-md'
-                                            : 'bg-white dark:bg-gray-800 text-gray-500 border-gray-200 dark:border-gray-700 hover:border-orange-200'
+                                            : 'bg-white text-gray-500 border-gray-200 hover:border-orange-200'
                                     }`}
                                 >
                                     {cat.name}
@@ -214,14 +214,14 @@ export default function CourseForm({ course = null, categories = [] }) {
             </div>
 
             {/* Section 2: Thumbnail */}
-            <div className="pt-8 border-t border-gray-100 dark:border-gray-700 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="pt-8 border-t border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div className="md:col-span-1">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Poster / Thumbnail</h3>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">Poster / Thumbnail</h3>
                     <p className="text-sm text-gray-500">Upload gambar poster atau thumbnail untuk kelas ini.</p>
                 </div>
                 <div className="md:col-span-2 space-y-4">
                     {course?.thumbnail_url && (
-                        <div className="w-full max-w-md rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                        <div className="w-full max-w-md rounded-2xl overflow-hidden border border-gray-100">
                             <img src={course.thumbnail_url} alt="Current thumbnail" className="w-full h-48 object-cover" />
                             <p className="text-xs text-gray-400 p-3">Thumbnail saat ini. Upload file baru untuk mengganti.</p>
                         </div>
@@ -242,9 +242,9 @@ export default function CourseForm({ course = null, categories = [] }) {
 
             {/* Section 3: Mode Pelaksanaan */}
             {data.type === 'activity' && (
-                <div className="pt-8 border-t border-gray-100 dark:border-gray-700 grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div className="pt-8 border-t border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-12">
                     <div className="md:col-span-1">
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Mode Pelaksanaan</h3>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">Mode Pelaksanaan</h3>
                         <p className="text-sm text-gray-500">Tentukan apakah kelas dilaksanakan secara online atau offline.</p>
                     </div>
                     <div className="md:col-span-2 space-y-6">
@@ -254,7 +254,7 @@ export default function CourseForm({ course = null, categories = [] }) {
                                 className={`flex-1 flex items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-all ${
                                     data.mode === 'offline'
                                         ? 'border-[#FF7A00] bg-orange-50/50'
-                                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                                        : 'border-gray-200 hover:border-gray-300'
                                 }`}
                             >
                                 <input
@@ -266,7 +266,7 @@ export default function CourseForm({ course = null, categories = [] }) {
                                     className="text-[#FF7A00] focus:ring-[#FF7A00]"
                                 />
                                 <div>
-                                    <span className="font-bold text-gray-900 dark:text-white">Offline</span>
+                                    <span className="font-bold text-gray-900">Offline</span>
                                     <p className="text-xs text-gray-500">Tatap muka langsung</p>
                                 </div>
                             </label>
@@ -275,7 +275,7 @@ export default function CourseForm({ course = null, categories = [] }) {
                                 className={`flex-1 flex items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-all ${
                                     data.mode === 'online'
                                         ? 'border-[#FF7A00] bg-orange-50/50'
-                                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                                        : 'border-gray-200 hover:border-gray-300'
                                 }`}
                             >
                                 <input
@@ -287,7 +287,7 @@ export default function CourseForm({ course = null, categories = [] }) {
                                     className="text-[#FF7A00] focus:ring-[#FF7A00]"
                                 />
                                 <div>
-                                    <span className="font-bold text-gray-900 dark:text-white">Online</span>
+                                    <span className="font-bold text-gray-900">Online</span>
                                     <p className="text-xs text-gray-500">Via video conference</p>
                                 </div>
                             </label>
@@ -326,9 +326,9 @@ export default function CourseForm({ course = null, categories = [] }) {
 
             {/* Section 4: Schedule */}
             {data.type === 'activity' && (
-                <div className="pt-8 border-t border-gray-100 dark:border-gray-700 grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div className="pt-8 border-t border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-12">
                     <div className="md:col-span-1">
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Jadwal Kelas</h3>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">Jadwal Kelas</h3>
                         <p className="text-sm text-gray-500">Atur periode, jam, dan hari pelaksanaan kelas.</p>
                     </div>
                     <div className="md:col-span-2 space-y-6">
@@ -400,7 +400,7 @@ export default function CourseForm({ course = null, categories = [] }) {
                                         className={`px-5 py-2.5 rounded-2xl text-sm font-bold border-2 transition-all ${
                                             data.days.includes(day.value)
                                                 ? 'bg-[#FF7A00] text-white border-[#FF7A00] shadow-md shadow-orange-100'
-                                                : 'bg-white dark:bg-gray-800 text-gray-500 border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                                                : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'
                                         }`}
                                     >
                                         {day.label}
@@ -414,7 +414,7 @@ export default function CourseForm({ course = null, categories = [] }) {
             )}
 
             {/* Submit */}
-            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100 dark:border-gray-700">
+            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
                 <PrimaryButton disabled={processing} className="bg-[#FF7A00] hover:bg-[#E66E00] px-8 py-3 rounded-2xl font-black uppercase tracking-widest text-xs">
                     {course 
                         ? 'Simpan Perubahan' 

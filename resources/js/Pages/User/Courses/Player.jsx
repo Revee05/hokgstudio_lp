@@ -40,7 +40,7 @@ export default function Player({ auth, course, currentLesson }) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+        <div className="min-h-screen bg-gray-50 flex flex-col">
             <Head title={`${course.title}${currentLesson ? ` - ${currentLesson.title}` : ''}`} />
             
             <PlayerHeader 
@@ -58,7 +58,7 @@ export default function Player({ auth, course, currentLesson }) {
                     sidebarOpen={sidebarOpen} 
                 />
 
-                <main className="flex-1 overflow-y-auto bg-white dark:bg-gray-950 p-6 md:p-12">
+                <main className="flex-1 overflow-y-auto bg-white p-6 md:p-12">
                     <div className="max-w-4xl mx-auto">
                         {!currentLesson ? (
                             <div className="py-20 text-center space-y-8">
@@ -67,12 +67,12 @@ export default function Player({ auth, course, currentLesson }) {
                                         <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                                             <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
                                         </div>
-                                        <h2 className="text-4xl font-black text-gray-900 dark:text-white">Course Completed! 🎉</h2>
+                                        <h2 className="text-4xl font-black text-gray-900">Course Completed! 🎉</h2>
                                         <p className="text-gray-500 mt-4 max-w-md mx-auto">Congratulations! You've successfully finished all the lessons in this course. Keep up the great work!</p>
                                         <div className="pt-8">
                                             <a 
                                                 href={route('dashboard')}
-                                                className="inline-flex items-center px-10 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
+                                                className="inline-flex items-center px-10 py-4 bg-gray-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
                                             >
                                                 Back to Learning Hub
                                             </a>
@@ -80,11 +80,11 @@ export default function Player({ auth, course, currentLesson }) {
                                     </div>
                                 ) : (
                                     <>
-                                        <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-4">Welcome to {course.title}</h2>
+                                        <h2 className="text-3xl font-black text-gray-900 mb-4">Welcome to {course.title}</h2>
                                         <p className="text-gray-500 mb-8">{course.description}</p>
                                         {allLessons.length > 0 && (
                                             <a 
-                                                href={route('courses.learn', [course.id, allLessons[0].id])}
+                                                href={route('courses.learn', [course.slug, allLessons[0].slug])}
                                                 className="inline-flex items-center px-8 py-4 bg-[#FF7A00] text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-[#E66E00] transition-all shadow-xl shadow-orange-100"
                                             >
                                                 Start Learning

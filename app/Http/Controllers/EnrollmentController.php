@@ -69,7 +69,7 @@ class EnrollmentController extends Controller
                     'email' => $user->email,
                 ],
                 'success_redirect_url' => route('dashboard'),
-                'failure_redirect_url' => route('courses.show', $payable->id),
+                'failure_redirect_url' => route('courses.show', $payable),
                 'currency' => 'IDR',
                 'reminder_time' => 1,
             ]);

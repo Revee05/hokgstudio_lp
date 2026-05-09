@@ -25,6 +25,7 @@ class Course extends Model
         'days',
         'location',
         'meet_link',
+        'slug',
     ];
 
     protected $appends = ['thumbnail_url'];
@@ -37,6 +38,20 @@ class Course extends Model
             'end_date' => 'date',
             'price' => 'decimal:2',
         ];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($course) {
+            if (empty($course->slug)) {
+                $course->slug = \Illuminate\Support\Str::slug($course->title) . '-' . \Illuminate\Support\Str::random(5);
+            }
+        });
     }
 
     /**

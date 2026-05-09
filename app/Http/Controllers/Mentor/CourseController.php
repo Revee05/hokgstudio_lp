@@ -134,7 +134,7 @@ class CourseController extends Controller
         $course->categories()->sync(array_unique($finalCategoryIds));
 
         if ($course->type === 'product') {
-            return Redirect::route('mentor.courses.curriculum', $course->id)->with('success', 'Kelas berhasil dibuat. Silakan susun kurikulum Anda!');
+            return Redirect::route('mentor.courses.curriculum', $course)->with('success', 'Kelas berhasil dibuat. Silakan susun kurikulum Anda!');
         }
 
         return Redirect::route('mentor.courses.index')->with('success', 'Course created successfully.');

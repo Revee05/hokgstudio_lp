@@ -186,7 +186,7 @@
                         @foreach ($courses as $course)
                             @php
                                 $isEnrolled = in_array($course->id, $enrolledCourseIds);
-                                $courseLink = $isEnrolled ? route('courses.learn', $course->id) : route('courses.show', $course->id);
+                                $courseLink = $isEnrolled ? route('courses.learn', $course) : route('courses.show', $course);
                             @endphp
                             <div class="group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full cursor-pointer">
                                 <a href="{{ $courseLink }}" class="absolute inset-0 z-30"></a>

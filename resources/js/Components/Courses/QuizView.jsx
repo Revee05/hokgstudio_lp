@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { router } from '@inertiajs/react';
 
-export default function QuizView({ quiz, onComplete }) {
+export default function QuizView({ quiz, onComplete, isCompleted = false }) {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
     const [showResults, setShowResults] = useState(false);
@@ -37,6 +37,122 @@ export default function QuizView({ quiz, onComplete }) {
         return (
             <div className="text-center py-12">
                 <p className="text-gray-500 font-bold">No questions available for this quiz.</p>
+            </div>
+        );
+    }
+
+    const userAttempt = quiz.attempts?.[0];
+    const userAnswersMap = {};
+    if (userAttempt && userAttempt.answers) {
+        userAttempt.answers.forEach(a => {
+            userAnswersMap[a.question_id] = a.option_id || a.answer_text;
+        });
+    }
+
+    if (isCompleted) {
+        return (
+            <div className="space-y-10">
+                <div className="bg-green-50 border border-green-100 rounded-3xl p-8 flex items-center gap-6">
+                    <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-black text-gray-900">Quiz Sudah Selesai (Lulus)</h2>
+                        <p className="text-sm text-green-700 mt-1">
+                            Anda telah berhasil melewati kuis ini dengan skor <strong>{userAttempt?.score}%</strong>. Berikut adalah tinjauan jawaban Anda.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="space-y-8">
+                    {quiz.questions.map((question, index) => {
+                        const userAnswer = userAnswersMap[question.id];
+                        const isCorrect = question.type === 'multiple_choice' 
+                            ? question.options.find(o => o.is_correct)?.id === userAnswer
+                            : true; // Simplification for review
+
+                        return (
+                            <div key={question.id} className="bg-white border border-gray-100 rounded-[2.5rem] p-8 shadow-sm">
+                                <div className="flex justify-between items-start mb-6">
+                                    <div className="flex items-center gap-3">
+                                        <span className="w-8 h-8 bg-gray-900 text-white rounded-xl flex items-center justify-center text-xs font-black">
+                                            {index + 1}
+                                        </span>
+                                        <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest ${
+                                            isCorrect ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+                                        }`}>
+                                            {isCorrect ? 'Correct' : 'Incorrect'}
+                                        </span>
+                                    </div>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                        {question.type === 'multiple_choice' ? 'Multiple Choice' : 'Essay'}
+                                    </span>
+                                </div>
+
+                                <h3 className="text-lg font-bold text-gray-900 mb-6 leading-relaxed">
+                                    {question.question_text}
+                                </h3>
+
+                                <div className="grid gap-3">
+                                    {question.type === 'multiple_choice' ? (
+                                        question.options.map((option) => {
+                                            const isUserChoice = userAnswer === option.id;
+                                            const isCorrectOption = option.is_correct;
+                                            
+                                            let borderClass = 'border-gray-50';
+                                            let bgClass = 'bg-gray-50';
+                                            let textClass = 'text-gray-500';
+
+                                            if (isCorrectOption) {
+                                                borderClass = 'border-green-500';
+                                                bgClass = 'bg-green-50';
+                                                textClass = 'text-green-700';
+                                            } else if (isUserChoice && !isCorrectOption) {
+                                                borderClass = 'border-red-500';
+                                                bgClass = 'bg-red-50';
+                                                textClass = 'text-red-700';
+                                            }
+
+                                            return (
+                                                <div key={option.id} className={`p-5 rounded-2xl border-2 flex items-center gap-4 transition-all ${borderClass} ${bgClass} ${textClass}`}>
+                                                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                                                        isCorrectOption ? 'border-green-500 bg-green-500' : (isUserChoice ? 'border-red-500 bg-red-500' : 'border-gray-200')
+                                                    }`}>
+                                                        {(isCorrectOption || isUserChoice) && (
+                                                            <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                                                        )}
+                                                    </div>
+                                                    <span className="font-bold text-sm flex-1">{option.option_text}</span>
+                                                    {isCorrectOption && (
+                                                        <span className="text-[9px] font-black uppercase tracking-widest bg-green-200 text-green-800 px-2 py-0.5 rounded-md">Correct Answer</span>
+                                                    )}
+                                                    {isUserChoice && !isCorrectOption && (
+                                                        <span className="text-[9px] font-black uppercase tracking-widest bg-red-200 text-red-800 px-2 py-0.5 rounded-md">Your Choice</span>
+                                                    )}
+                                                </div>
+                                            );
+                                        })
+                                    ) : (
+                                        <div className="p-6 bg-gray-50 rounded-2xl border-2 border-gray-100">
+                                            <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Jawaban Anda:</p>
+                                            <p className="text-sm text-gray-700 leading-relaxed italic">
+                                                {userAnswer || 'Tidak ada jawaban.'}
+                                            </p>
+                                            {userAttempt?.mentor_feedback && (
+                                                <div className="mt-4 pt-4 border-t border-gray-200">
+                                                    <p className="text-xs font-black text-orange-400 uppercase tracking-widest mb-2">Feedback Mentor:</p>
+                                                    <p className="text-sm text-gray-600">{userAttempt.mentor_feedback}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         );
     }
@@ -99,7 +215,7 @@ export default function QuizView({ quiz, onComplete }) {
                     <span className="text-3xl font-black">{score}%</span>
                 </div>
                 <div>
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white">
+                    <h3 className="text-2xl font-black text-gray-900">
                         {pendingReview ? 'Quiz Submitted! 📝' : (passed ? 'Congratulations! 🎉' : 'Keep Trying! 💪')}
                     </h3>
                     <p className="text-gray-500 mt-2">
@@ -117,7 +233,7 @@ export default function QuizView({ quiz, onComplete }) {
                             setCurrentQuestionIndex(0);
                             setAnswers({});
                         }}
-                        className="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl font-black text-sm uppercase tracking-widest"
+                        className="px-8 py-3 bg-gray-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest"
                     >
                         Retake Quiz
                     </button>
@@ -142,7 +258,7 @@ export default function QuizView({ quiz, onComplete }) {
             </div>
 
             <div className="space-y-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-relaxed">
+                <h3 className="text-xl font-bold text-zinc-600 leading-relaxed">
                     {currentQuestion.question_text}
                 </h3>
 
@@ -155,12 +271,12 @@ export default function QuizView({ quiz, onComplete }) {
                                 className={`w-full text-left p-6 rounded-2xl border-2 transition-all duration-200 ${
                                     answers[currentQuestion.id] === option.id
                                         ? 'border-[#FF7A00] bg-orange-50 text-[#FF7A00]'
-                                        : 'border-gray-100 dark:border-gray-800 hover:border-orange-200 dark:hover:border-orange-900/30'
+                                        : 'border-gray-100 hover:border-orange-200'
                                 }`}
                             >
                                 <div className="flex items-center gap-4">
                                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                                        answers[currentQuestion.id] === option.id ? 'border-orange-500 bg-orange-500' : 'border-gray-200 dark:border-gray-700'
+                                        answers[currentQuestion.id] === option.id ? 'border-orange-500 bg-orange-500' : 'border-gray-200'
                                     }`}>
                                         {answers[currentQuestion.id] === option.id && (
                                             <div className="w-2 h-2 rounded-full bg-white"></div>
@@ -173,7 +289,7 @@ export default function QuizView({ quiz, onComplete }) {
                     ) : (
                         <div className="space-y-4">
                             <textarea
-                                className="w-full p-6 rounded-3xl border-2 border-gray-100 dark:border-gray-800 dark:bg-gray-900 dark:text-white focus:border-orange-500 transition-all min-h-[200px]"
+                                className="w-full p-6 rounded-3xl border-2 border-gray-100 focus:border-orange-500 transition-all min-h-[200px]"
                                 placeholder="Tuliskan jawaban Anda di sini..."
                                 value={answers[currentQuestion.id] || ''}
                                 onChange={(e) => handleSelectOption(e.target.value)}

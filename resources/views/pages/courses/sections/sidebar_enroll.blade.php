@@ -35,13 +35,13 @@
             @endphp
 
             @if($isEnrolled)
-                <a href="{{ $type === 'course' ? route('courses.learn', $payable->id) : route('courses.index') }}" 
+                <a href="{{ $type === 'course' ? route('courses.learn', $payable) : route('courses.index') }}" 
                    class="w-full py-5 bg-green-500 text-white rounded-2xl font-black text-lg shadow-xl shadow-green-200 hover:shadow-green-300 transform hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-2">
                     <i data-lucide="play-circle" class="w-6 h-6"></i>
                     Lanjut Belajar
                 </a>
             @else
-                <form action="{{ route('enroll.' . $type, $payable->id) }}" method="POST">
+                <form action="{{ route('enroll.' . $type, $payable) }}" method="POST">
                     @csrf
                     <button type="submit" class="w-full py-5 bg-primary-gradient text-white rounded-2xl font-black text-lg shadow-xl shadow-orange-200 hover:shadow-orange-300 transform hover:-translate-y-1 transition-all active:scale-95">
                         Daftar Sekarang

@@ -46,7 +46,7 @@ export default function Curriculum({ auth, course }) {
 
     const submitModule = (e) => {
         e.preventDefault();
-        moduleForm.post(route('mentor.courses.modules.store', course.id), {
+        moduleForm.post(route('mentor.courses.modules.store', course.slug), {
             onSuccess: () => {
                 setShowModuleModal(false);
                 moduleForm.reset();
@@ -66,7 +66,7 @@ export default function Curriculum({ auth, course }) {
 
     const submitEditLesson = (e) => {
         e.preventDefault();
-        editLessonForm.patch(route('mentor.lessons.update', editingLesson.id), {
+        editLessonForm.patch(route('mentor.lessons.update', editingLesson.slug), {
             onSuccess: () => {
                 setShowEditLessonModal(false);
                 editLessonForm.reset();
@@ -76,7 +76,7 @@ export default function Curriculum({ auth, course }) {
 
     const submitQuestion = (e) => {
         e.preventDefault();
-        questionForm.post(route('mentor.lessons.questions.store', currentLessonData.id), {
+        questionForm.post(route('mentor.lessons.questions.store', currentLessonData.slug), {
             onSuccess: () => {
                 questionForm.reset();
             },
@@ -109,12 +109,12 @@ export default function Curriculum({ auth, course }) {
             user={auth.user}
             header={
                 <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Curriculum: {course.title}
+                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                        Manajemen Kurikulum: {course.title}
                     </h2>
                     <Link
-                        href={route('mentor.courses.index')}
-                        className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900"
+                        href={route('mentor.courses.edit', course.slug)}
+                        className="text-sm text-gray-600 hover:text-gray-900"
                     >
                         Back to Courses
                     </Link>
@@ -138,16 +138,16 @@ export default function Curriculum({ auth, course }) {
 
                     {/* Modules List */}
                     {course.modules.length === 0 ? (
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-12 text-center border-2 border-dashed border-gray-200 dark:border-gray-700">
+                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-12 text-center border-2 border-dashed border-gray-200">
                             <p className="text-gray-500">No modules yet. Start by adding your first module.</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {course.modules.map((module) => (
-                                <div key={module.id} className="bg-white dark:bg-gray-800 shadow-sm sm:rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-                                    <div className="p-6 flex justify-between items-center border-b border-gray-50 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+                                <div key={module.id} className="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                                    <div className="p-6 flex justify-between items-center border-b border-gray-50 bg-gray-50/50">
                                         <div>
-                                            <h3 className="font-bold text-lg text-gray-900 dark:text-white">{module.title}</h3>
+                                            <h3 className="font-bold text-lg text-gray-900">{module.title}</h3>
                                             <p className="text-xs text-gray-500">{module.lessons.length} Lessons</p>
                                         </div>
                                         <div className="flex gap-2">
@@ -163,9 +163,9 @@ export default function Curriculum({ auth, course }) {
                                         </div>
                                     </div>
                                     
-                                    <div className="divide-y divide-gray-50 dark:divide-gray-700">
+                                    <div className="divide-y divide-gray-50">
                                         {module.lessons.map((lesson) => (
-                                            <div key={lesson.id} className="p-4 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-900/30 transition-all group">
+                                            <div key={lesson.id} className="p-4 flex justify-between items-center hover:bg-gray-50 transition-all group">
                                                 <div className="flex items-center gap-4">
                                                     <div className={`p-2 rounded-xl ${
                                                         lesson.content_type === 'video' ? 'bg-blue-50 text-blue-600' :
@@ -175,7 +175,7 @@ export default function Curriculum({ auth, course }) {
                                                         {lesson.content_type === 'quiz' && <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path d="M7 3a1 1 0 00-1 1v12a1 1 0 001 1h6a1 1 0 001-1V4a1 1 0 00-1-1H7z"/></svg>}
                                                         {lesson.content_type === 'article' && <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/></svg>}
                                                     </div>
-                                                    <span className="font-medium text-gray-700 dark:text-gray-300">{lesson.title}</span>
+                                                    <span className="font-medium text-gray-700">{lesson.title}</span>
                                                 </div>
                                                 <div className="opacity-0 group-hover:opacity-100 transition-opacity flex gap-3">
                                                      <button 
@@ -223,8 +223,8 @@ export default function Curriculum({ auth, course }) {
             {/* Module Modal */}
             {showModuleModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-md w-full shadow-2xl">
-                        <h2 className="text-xl font-bold mb-4 dark:text-white">Add New Module</h2>
+                    <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
+                        <h2 className="text-xl font-bold mb-4">Add New Module</h2>
                         <form onSubmit={submitModule} className="space-y-4">
                             <div>
                                 <InputLabel htmlFor="module_title" value="Module Title" />
@@ -248,8 +248,8 @@ export default function Curriculum({ auth, course }) {
             {/* Lesson Modal */}
             {showLessonModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-md w-full shadow-2xl">
-                        <h2 className="text-xl font-bold mb-4 dark:text-white">Add Lesson to {selectedModule?.title}</h2>
+                    <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
+                        <h2 className="text-xl font-bold mb-4">Add Lesson to {selectedModule?.title}</h2>
                         <form onSubmit={submitLesson} className="space-y-4">
                             <div>
                                 <InputLabel htmlFor="lesson_title" value="Lesson Title" />
@@ -265,7 +265,7 @@ export default function Curriculum({ auth, course }) {
                                 <InputLabel htmlFor="content_type" value="Content Type" />
                                 <select
                                     id="content_type"
-                                    className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-2xl shadow-sm"
+                                    className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-2xl shadow-sm"
                                     value={lessonForm.data.content_type}
                                     onChange={(e) => lessonForm.setData('content_type', e.target.value)}
                                 >
@@ -286,8 +286,8 @@ export default function Curriculum({ auth, course }) {
             {/* Edit Lesson Modal */}
             {showEditLessonModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-2xl w-full shadow-2xl">
-                        <h2 className="text-xl font-bold mb-4 dark:text-white">Edit Lesson: {editingLesson?.title}</h2>
+                    <div className="bg-white rounded-3xl p-8 max-w-2xl w-full shadow-2xl">
+                        <h2 className="text-xl font-bold mb-4">Edit Lesson: {editingLesson?.title}</h2>
                         <form onSubmit={submitEditLesson} className="space-y-4">
                             <div>
                                 <InputLabel htmlFor="edit_lesson_title" value="Lesson Title" />
@@ -344,9 +344,9 @@ export default function Curriculum({ auth, course }) {
             {/* Quiz Management Modal */}
             {showQuizModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-4xl w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white rounded-3xl p-8 max-w-4xl w-full shadow-2xl max-h-[90vh] overflow-y-auto">
                         <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-xl font-bold dark:text-white">Quiz Builder: {currentLessonData?.title}</h2>
+                            <h2 className="text-xl font-bold">Quiz Builder: {currentLessonData?.title}</h2>
                             <button onClick={() => setShowQuizModal(false)} className="text-gray-400 hover:text-gray-600">
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
                             </button>
@@ -354,9 +354,9 @@ export default function Curriculum({ auth, course }) {
 
                         {/* Quiz Settings Bar */}
                         {currentLessonData?.quiz && (
-                            <form onSubmit={submitQuizSettings} className="mb-8 p-6 bg-orange-50 dark:bg-orange-900/10 rounded-3xl border border-orange-100 dark:border-orange-900/30 flex flex-wrap gap-6 items-end">
+                            <form onSubmit={submitQuizSettings} className="mb-8 p-6 bg-orange-50 rounded-3xl border border-orange-100 flex flex-wrap gap-6 items-end">
                                 <div className="flex-1 min-w-[150px]">
-                                    <InputLabel value="Timer (Minutes)" className="text-orange-700 dark:text-orange-400" />
+                                    <InputLabel value="Timer (Minutes)" className="text-orange-700" />
                                     <TextInput 
                                         type="number"
                                         placeholder="No limit"
@@ -366,7 +366,7 @@ export default function Curriculum({ auth, course }) {
                                     />
                                 </div>
                                 <div className="flex-1 min-w-[150px]">
-                                    <InputLabel value="Passing Score (%)" className="text-orange-700 dark:text-orange-400" />
+                                    <InputLabel value="Passing Score (%)" className="text-orange-700" />
                                     <TextInput 
                                         type="number"
                                         className="w-full mt-1 border-orange-200 focus:border-orange-500 focus:ring-orange-500"
@@ -384,7 +384,7 @@ export default function Curriculum({ auth, course }) {
                             {/* Form Tambah Pertanyaan */}
                             <div className="space-y-6">
                                 <h3 className="font-black text-xs uppercase tracking-widest text-gray-400">Add New Question</h3>
-                                <form onSubmit={submitQuestion} className="space-y-4 bg-gray-50 dark:bg-gray-900/50 p-6 rounded-3xl border border-gray-100 dark:border-gray-800">
+                                <form onSubmit={submitQuestion} className="space-y-4 bg-gray-50 p-6 rounded-3xl border border-gray-100">
                                     <div>
                                         <InputLabel value="Question Text" />
                                         <TextInput 
@@ -397,7 +397,7 @@ export default function Curriculum({ auth, course }) {
                                     <div>
                                         <InputLabel value="Question Type" />
                                         <select 
-                                            className="w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 rounded-2xl shadow-sm"
+                                            className="w-full mt-1 border-gray-300 focus:border-indigo-500 rounded-2xl shadow-sm"
                                             value={questionForm.data.type}
                                             onChange={(e) => questionForm.setData('type', e.target.value)}
                                         >
@@ -474,7 +474,7 @@ export default function Curriculum({ auth, course }) {
                                         <p className="text-gray-400 text-sm italic">No questions yet. Add your first question to initialize the quiz.</p>
                                     ) : (
                                         currentLessonData?.quiz?.questions?.map((q) => (
-                                            <div key={q.id} className="p-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl flex justify-between items-start gap-4 shadow-sm">
+                                            <div key={q.id} className="p-4 bg-white border border-gray-100 rounded-2xl flex justify-between items-start gap-4 shadow-sm">
                                                 <div>
                                                     <div className="flex items-center gap-2 mb-1">
                                                         <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full ${
@@ -482,7 +482,7 @@ export default function Curriculum({ auth, course }) {
                                                         }`}>
                                                             {q.type}
                                                         </span>
-                                                        <p className="font-bold text-sm dark:text-white leading-tight">{q.question_text}</p>
+                                                        <p className="font-bold text-sm leading-tight">{q.question_text}</p>
                                                     </div>
                                                     {q.type === 'multiple_choice' && (
                                                         <div className="ml-4 space-y-1 mt-2">

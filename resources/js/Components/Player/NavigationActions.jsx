@@ -15,7 +15,7 @@ export default function NavigationActions({
             <div className="flex-1 w-full sm:w-auto">
                 {prevLesson ? (
                     <Link 
-                        href={route('courses.learn', [course.id, prevLesson.id])}
+                        href={route('courses.learn', [course.slug, prevLesson.slug])}
                         className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-gray-600 transition-all group"
                     >
                         <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-gray-100 transition-all">
@@ -33,7 +33,7 @@ export default function NavigationActions({
                 <button 
                     onClick={markAsComplete}
                     disabled={processing}
-                    className="w-full sm:w-auto px-10 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-gray-200 dark:shadow-none disabled:opacity-50 disabled:scale-100"
+                    className="w-full sm:w-auto px-10 py-4 bg-gray-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-gray-200 disabled:opacity-50 disabled:scale-100"
                 >
                     {processing ? (
                         <div className="flex items-center gap-2">
@@ -50,7 +50,7 @@ export default function NavigationActions({
             <div className="flex-1 w-full sm:w-auto flex justify-end">
                 {nextLesson ? (
                     <Link 
-                        href={route('courses.learn', [course.id, nextLesson.id])}
+                        href={route('courses.learn', [course.slug, nextLesson.slug])}
                         className="flex items-center gap-2 text-sm font-bold text-[#FF7A00] hover:text-[#E66E00] transition-all group text-right"
                     >
                         <div className="flex flex-col">

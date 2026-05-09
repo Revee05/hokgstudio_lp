@@ -20,7 +20,7 @@ class CoursePlayerController extends Controller
                      $user->courses()->where('course_id', $course->id)->exists();
 
         if (!$hasAccess) {
-            return redirect()->route('courses.show', $course->id)->with('error', 'Anda belum mendaftar di kelas ini.');
+            return redirect()->route('courses.show', $course)->with('error', 'Anda belum mendaftar di kelas ini.');
         }
 
         $course->load(['modules.lessons.completions' => function($query) {
@@ -33,7 +33,15 @@ class CoursePlayerController extends Controller
 
         return Inertia::render('User/Courses/Player', [
             'course' => $course,
-            'currentLesson' => $lesson ? $lesson->load('quiz.questions.options') : null,
+            'currentLesson' => $lesson ? $lesson->load([
+                'quiz.questions.options', 
+                'quiz.attempts' => function($query) {
+                    $query->where('user_id', auth()->id())->with('answers')->latest();
+                },
+                'completions' => function($query) {
+                    $query->where('user_id', auth()->id());
+                }
+            ]) : null,
         ]);
     }
 

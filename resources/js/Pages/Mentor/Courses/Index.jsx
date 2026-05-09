@@ -44,9 +44,9 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
         return () => clearTimeout(timer);
     }, [search]);
 
-    const handleDelete = (courseId) => {
+    const handleDelete = (course) => {
         if (confirm('Yakin ingin menghapus kelas ini?')) {
-            router.delete(route('mentor.courses.destroy', courseId));
+            router.delete(route('mentor.courses.destroy', course.slug));
         }
     };
 
@@ -234,7 +234,7 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
                                             <div className="flex gap-1.5">
                                                 {course.type === 'product' && (
                                                     <Link
-                                                        href={route('mentor.courses.curriculum', course.id)}
+                                                        href={route('mentor.courses.curriculum', course.slug)}
                                                         className="p-2 bg-orange-50 text-[#FF7A00] hover:bg-orange-100 rounded-xl transition-all"
                                                         title="Manage Curriculum"
                                                     >
@@ -242,13 +242,13 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
                                                     </Link>
                                                 )}
                                                 <Link
-                                                    href={route('mentor.courses.edit', course.id)}
+                                                    href={route('mentor.courses.edit', course.slug)}
                                                     className="p-2 bg-gray-50 text-gray-400 hover:text-[#FF7A00] hover:bg-orange-50 rounded-xl transition-all"
                                                 >
                                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                                 </Link>
                                                 <button
-                                                    onClick={() => handleDelete(course.id)}
+                                                    onClick={() => handleDelete(course)}
                                                     className="p-2 bg-gray-50 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
                                                 >
                                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>

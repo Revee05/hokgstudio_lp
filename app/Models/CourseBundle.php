@@ -11,6 +11,7 @@ class CourseBundle extends Model
     protected $fillable = [
         'mentor_id',
         'title',
+        'slug',
         'description',
         'thumbnail',
         'price',
@@ -57,5 +58,19 @@ class CourseBundle extends Model
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(BundleCategory::class, 'bundle_bundle_category');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($bundle) {
+            if (empty($bundle->slug)) {
+                $bundle->slug = \Illuminate\Support\Str::slug($bundle->title) . '-' . \Illuminate\Support\Str::random(5);
+            }
+        });
     }
 }

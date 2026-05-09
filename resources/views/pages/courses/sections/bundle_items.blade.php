@@ -8,7 +8,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         @foreach($bundle->courses as $item)
-            <a href="{{ route('courses.show', $item->id) }}" class="group bg-white rounded-3xl border border-gray-100 p-4 flex gap-4 hover:border-[#FF7A00]/30 hover:shadow-xl hover:shadow-orange-100/20 transition-all">
+            <a href="{{ route('courses.show', $item) }}" class="group bg-white rounded-3xl border border-gray-100 p-4 flex gap-4 hover:border-[#FF7A00]/30 hover:shadow-xl hover:shadow-orange-100/20 transition-all">
                 <div class="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0">
                     <img src="{{ $item->thumbnail_url ?: asset('images/default_course.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                 </div>

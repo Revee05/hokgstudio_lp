@@ -76,7 +76,7 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
     }, [value]);
 
     return (
-        <div className="mt-1 bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-300 dark:border-gray-700">
+        <div className="mt-1 bg-white rounded-2xl overflow-hidden border">
             <div ref={editorRef} style={{ minHeight: '150px' }} />
         </div>
     );

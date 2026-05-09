@@ -18,7 +18,7 @@ export default function LessonContent({ currentLesson, markAsComplete }) {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Lesson Title */}
             <div>
-                <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2">{currentLesson.title}</h2>
+                <h2 className="text-3xl font-black text-gray-900 mb-2">{currentLesson.title}</h2>
                 <div className="flex items-center gap-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
                     <span>Module: {currentLesson.module?.title}</span>
                     <span>•</span>
@@ -27,7 +27,7 @@ export default function LessonContent({ currentLesson, markAsComplete }) {
             </div>
 
             {/* Content Display */}
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800">
+            <div className="bg-gray-50 rounded-[2.5rem] overflow-hidden shadow-sm border border-gray-100">
                 {currentLesson.content_type === 'video' && (
                     <div className="aspect-video bg-black flex items-center justify-center relative group">
                         {currentLesson.content_data ? (
@@ -47,19 +47,19 @@ export default function LessonContent({ currentLesson, markAsComplete }) {
                 )}
 
                 {currentLesson.content_type === 'video' && currentLesson.extra_description && (
-                    <div className="p-8 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50">
+                    <div className="p-8 border-t border-gray-100 bg-white">
                         <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Informasi Tambahan</h4>
-                        <div className="prose prose-sm dark:prose-invert max-w-none">
+                        <div className="prose prose-sm max-w-none">
                             <div dangerouslySetInnerHTML={{ __html: currentLesson.extra_description }}></div>
                         </div>
                     </div>
                 )}
 
                 {currentLesson.content_type === 'article' && (
-                    <div className="p-8 md:p-12 bg-white dark:bg-gray-900">
-                        <div className="prose dark:prose-invert prose-orange max-w-none 
+                    <div className="p-8 md:p-12 bg-white">
+                        <div className="prose prose-orange max-w-none 
                             prose-headings:font-black prose-headings:tracking-tight
-                            prose-p:text-gray-600 dark:prose-p:text-gray-400 prose-p:leading-relaxed
+                            prose-p:text-gray-600 prose-p:leading-relaxed
                             prose-img:rounded-3xl prose-img:shadow-xl">
                             <div dangerouslySetInnerHTML={{ __html: currentLesson.content_data || 'No content provided.' }}></div>
                         </div>
@@ -68,7 +68,11 @@ export default function LessonContent({ currentLesson, markAsComplete }) {
 
                 {currentLesson.content_type === 'quiz' && (
                     <div className="p-8 md:p-12">
-                        <QuizView quiz={currentLesson.quiz} onComplete={markAsComplete} />
+                        <QuizView 
+                            quiz={currentLesson.quiz} 
+                            onComplete={markAsComplete} 
+                            isCompleted={currentLesson.completions && currentLesson.completions.length > 0}
+                        />
                     </div>
                 )}
             </div>

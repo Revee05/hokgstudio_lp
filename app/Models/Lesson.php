@@ -9,8 +9,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Lesson extends Model
 {
-    protected $fillable = ['module_id', 'title', 'content_type', 'content_data', 'extra_description', 'order'];
+    protected $fillable = ['module_id', 'title', 'slug', 'content_type', 'content_data', 'extra_description', 'order'];
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($lesson) {
+            if (empty($lesson->slug)) {
+                $lesson->slug = \Illuminate\Support\Str::slug($lesson->title) . '-' . \Illuminate\Support\Str::random(5);
+            }
+        });
+    }
     public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class);
