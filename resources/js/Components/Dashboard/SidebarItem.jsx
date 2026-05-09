@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 
 export default function SidebarItem({ href, active, children, icon: Icon }) {
     return (
-        <Link
+        <a
             href={href}
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 group ${
                 active 
@@ -17,6 +17,6 @@ export default function SidebarItem({ href, active, children, icon: Icon }) {
             {active && (
                 <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#FF7A00]"></div>
             )}
-        </Link>
+        </a>
     );
 }

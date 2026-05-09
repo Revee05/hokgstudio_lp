@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             MentorSeeder::class,
             CourseSeeder::class,
+            EnrollmentSeeder::class,
         ]);
     }
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { useForm } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 
 export default function QuizView({ quiz, onComplete }) {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -10,7 +10,7 @@ export default function QuizView({ quiz, onComplete }) {
     const [pendingReview, setPendingReview] = useState(false);
     const [timeLeft, setTimeLeft] = useState(quiz.duration ? quiz.duration * 60 : null);
 
-    const { post, processing } = useForm();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (timeLeft === null || showResults) return;
@@ -59,8 +59,9 @@ export default function QuizView({ quiz, onComplete }) {
     };
 
     const calculateResults = () => {
-        post(route('quizzes.submit', quiz.id), {
-            data: { answers },
+        setLoading(true);
+        router.post(route('quizzes.submit', quiz.id), { answers }, {
+            onFinish: () => setLoading(false),
             onSuccess: (page) => {
                 const hasEssay = quiz.questions.some(q => q.type === 'essay');
                 
@@ -185,15 +186,15 @@ export default function QuizView({ quiz, onComplete }) {
 
             <div className="flex justify-end pt-4">
                 <button
-                    disabled={!answers[currentQuestion.id] || processing}
+                    disabled={!answers[currentQuestion.id] || loading}
                     onClick={handleNext}
                     className={`px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest transition-all ${
-                        answers[currentQuestion.id] && !processing
+                        answers[currentQuestion.id] && !loading
                             ? 'bg-orange-500 text-white shadow-xl shadow-orange-100 hover:scale-105'
                             : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                     }`}
                 >
-                    {processing ? 'Submitting...' : (currentQuestionIndex === quiz.questions.length - 1 ? 'Finish Quiz' : 'Next Question')}
+                    {loading ? 'Submitting...' : (currentQuestionIndex === quiz.questions.length - 1 ? 'Finish Quiz' : 'Next Question')}
                 </button>
             </div>
         </div>

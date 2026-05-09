@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, router } from '@inertiajs/react';
 import { useState } from 'react';
 import Dropdown from '@/Components/Dropdown';
 
@@ -7,7 +7,7 @@ export default function TopNavbar({ onMenuButtonClick }) {
     const user = auth.user;
 
     return (
-        <nav className="h-20 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-20 px-4 md:px-8 flex items-center justify-between">
+        <nav className="h-20 bg-white border-b border-gray-100 sticky top-0 z-20 px-4 md:px-8 flex items-center justify-between shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
             {/* Left side: Mobile menu toggle & Title */}
             <div className="flex items-center gap-4">
                 <button 
@@ -62,8 +62,19 @@ export default function TopNavbar({ onMenuButtonClick }) {
                                 <p className="text-xs text-gray-400 font-bold uppercase tracking-widest leading-none mb-1">Signed in as</p>
                                 <p className="text-sm font-black text-[#FF7A00] uppercase truncate leading-none">{user.role_label}</p>
                             </div>
-                            <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
-                            <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
+                            <a 
+                                href={route('profile.edit')} 
+                                className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                            >
+                                Profile
+                            </a>
+                            <a 
+                                href={route('logout')} 
+                                onClick={(e) => { e.preventDefault(); router.post(route('logout')); }}
+                                className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none cursor-pointer"
+                            >
+                                Log Out
+                            </a>
                         </Dropdown.Content>
                     </Dropdown>
                 </div>

@@ -4,7 +4,7 @@
             <div class="mb-6">
                 <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Investasi Belajar</p>
                 <h3 class="text-3xl font-black text-[#FF7A00]">
-                    Rp {{ number_format($course->price, 0, ',', '.') }}
+                    Rp {{ number_format($payable->price, 0, ',', '.') }}
                 </h3>
             </div>
 
@@ -23,12 +23,34 @@
                 </div>
             </div>
 
-            <button class="w-full py-5 bg-primary-gradient text-white rounded-2xl font-black text-lg shadow-xl shadow-orange-200 hover:shadow-orange-300 transform hover:-translate-y-1 transition-all active:scale-95">
-                Daftar Sekarang
-            </button>
+            @php
+                $isEnrolled = false;
+                if(auth()->check()) {
+                    if($type === 'course') {
+                        $isEnrolled = auth()->user()->courses()->where('course_id', $payable->id)->exists();
+                    } else {
+                        $isEnrolled = auth()->user()->bundles()->where('course_bundle_id', $payable->id)->exists();
+                    }
+                }
+            @endphp
+
+            @if($isEnrolled)
+                <a href="{{ $type === 'course' ? route('courses.learn', $payable->id) : route('courses.index') }}" 
+                   class="w-full py-5 bg-green-500 text-white rounded-2xl font-black text-lg shadow-xl shadow-green-200 hover:shadow-green-300 transform hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <i data-lucide="play-circle" class="w-6 h-6"></i>
+                    Lanjut Belajar
+                </a>
+            @else
+                <form action="{{ route('enroll.' . $type, $payable->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full py-5 bg-primary-gradient text-white rounded-2xl font-black text-lg shadow-xl shadow-orange-200 hover:shadow-orange-300 transform hover:-translate-y-1 transition-all active:scale-95">
+                        Daftar Sekarang
+                    </button>
+                </form>
+            @endif
             
             <p class="text-center mt-6 text-[10px] text-gray-400 font-medium uppercase tracking-wider">
-                Pembayaran Aman & Terverifikasi
+                Pembayaran Aman & Terverifikasi via Xendit
             </p>
         </div>
         

@@ -138,10 +138,19 @@
                                     </div>
                                     <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
                                         <div>
-                                            <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Harga Paket</p>
-                                            <p class="text-lg font-extrabold text-[#FF7A00]">
-                                                Rp {{ number_format($bundle->price, 0, ',', '.') }}
+                                            <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">
+                                                {{ in_array($bundle->id, $enrolledBundleIds) ? 'Status' : 'Harga Paket' }}
                                             </p>
+                                            @if(in_array($bundle->id, $enrolledBundleIds))
+                                                <p class="text-lg font-extrabold text-green-600 flex items-center gap-1">
+                                                    <i data-lucide="check-circle" class="w-5 h-5"></i>
+                                                    Terdaftar
+                                                </p>
+                                            @else
+                                                <p class="text-lg font-extrabold text-[#FF7A00]">
+                                                    Rp {{ number_format($bundle->price, 0, ',', '.') }}
+                                                </p>
+                                            @endif
                                         </div>
                                         <div class="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-[#FF7A00]">
                                             <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -175,8 +184,12 @@
                 @else
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         @foreach ($courses as $course)
+                            @php
+                                $isEnrolled = in_array($course->id, $enrolledCourseIds);
+                                $courseLink = $isEnrolled ? route('courses.learn', $course->id) : route('courses.show', $course->id);
+                            @endphp
                             <div class="group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full cursor-pointer">
-                                <a href="{{ route('courses.show', $course->id) }}" class="absolute inset-0 z-30"></a>
+                                <a href="{{ $courseLink }}" class="absolute inset-0 z-30"></a>
                                 <div class="relative aspect-video overflow-hidden">
                                     <img src="{{ $course->thumbnail_url ?: asset('images/default_course.png') }}"
                                         alt="{{ $course->title }}"
@@ -213,11 +226,18 @@
                                         <span class="text-xs text-gray-500">{{ $course->mentor->user->name }}</span>
                                     </div>
                                     <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
-                                        <p class="text-lg font-extrabold text-[#FF7A00]">
-                                            Rp {{ number_format($course->price, 0, ',', '.') }}
-                                        </p>
+                                        @if($isEnrolled)
+                                            <p class="text-lg font-extrabold text-green-600 flex items-center gap-1">
+                                                <i data-lucide="check-circle" class="w-5 h-5"></i>
+                                                Terdaftar
+                                            </p>
+                                        @else
+                                            <p class="text-lg font-extrabold text-[#FF7A00]">
+                                                Rp {{ number_format($course->price, 0, ',', '.') }}
+                                            </p>
+                                        @endif
                                         <div class="p-2 rounded-full bg-gray-50 text-gray-400 group-hover:bg-[#FF7A00] group-hover:text-white transition-all">
-                                            <i data-lucide="eye" class="w-4 h-4"></i>
+                                            <i data-lucide="{{ $isEnrolled ? 'play' : 'eye' }}" class="w-4 h-4"></i>
                                         </div>
                                     </div>
                                 </div>

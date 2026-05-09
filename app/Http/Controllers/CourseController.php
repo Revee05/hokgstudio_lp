@@ -53,7 +53,25 @@ class CourseController extends Controller
         $categories = array_unique(array_merge($courseCats, $bundleCats));
         sort($categories);
 
-        return view('pages.courses.index', compact('bundles', 'courses', 'categories', 'search', 'categoryName'));
+        // Get enrolled IDs if logged in
+        $enrolledCourseIds = [];
+        $enrolledBundleIds = [];
+        
+        if (auth()->check()) {
+            $user = auth()->user();
+            $enrolledCourseIds = $user->courses()->pluck('courses.id')->toArray();
+            $enrolledBundleIds = $user->bundles()->pluck('course_bundles.id')->toArray();
+        }
+
+        return view('pages.courses.index', compact(
+            'bundles', 
+            'courses', 
+            'categories', 
+            'search', 
+            'categoryName',
+            'enrolledCourseIds',
+            'enrolledBundleIds'
+        ));
     }
     public function show(Course $course)
     {

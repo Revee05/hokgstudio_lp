@@ -408,20 +408,26 @@ export default function Curriculum({ auth, course }) {
 
                                     {questionForm.data.type === 'multiple_choice' && (
                                         <div className="space-y-3">
-                                            <InputLabel value="Options" />
+                                            <div className="flex justify-between items-center">
+                                                <InputLabel value="Options (Check radio for Answer Key)" />
+                                                <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full uppercase tracking-widest">Kunci Jawaban</span>
+                                            </div>
                                             {questionForm.data.options.map((opt, index) => (
-                                                <div key={index} className="flex gap-2 items-center">
-                                                    <input 
-                                                        type="radio" 
-                                                        name="correct_option"
-                                                        checked={opt.is_correct}
-                                                        onChange={() => {
-                                                            const newOpts = questionForm.data.options.map((o, i) => ({...o, is_correct: i === index}));
-                                                            questionForm.setData('options', newOpts);
-                                                        }}
-                                                    />
+                                                <div key={index} className={`flex gap-3 items-center p-2 rounded-2xl border-2 transition-all ${opt.is_correct ? 'border-green-200 bg-green-50/50' : 'border-transparent'}`}>
+                                                    <div className="flex flex-col items-center gap-1">
+                                                        <input 
+                                                            type="radio" 
+                                                            name="correct_option"
+                                                            className="text-green-600 focus:ring-green-500 w-5 h-5"
+                                                            checked={opt.is_correct}
+                                                            onChange={() => {
+                                                                const newOpts = questionForm.data.options.map((o, i) => ({...o, is_correct: i === index}));
+                                                                questionForm.setData('options', newOpts);
+                                                            }}
+                                                        />
+                                                    </div>
                                                     <TextInput 
-                                                        className="flex-1 text-sm" 
+                                                        className="flex-1 text-sm border-gray-200" 
                                                         value={opt.text}
                                                         placeholder={`Option ${index + 1}`}
                                                         onChange={(e) => {
@@ -437,7 +443,7 @@ export default function Curriculum({ auth, course }) {
                                                             const newOpts = questionForm.data.options.filter((_, i) => i !== index);
                                                             questionForm.setData('options', newOpts);
                                                         }}
-                                                        className="text-red-500"
+                                                        className="text-red-400 hover:text-red-600"
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                                     </button>
@@ -446,9 +452,10 @@ export default function Curriculum({ auth, course }) {
                                             <button 
                                                 type="button" 
                                                 onClick={() => questionForm.setData('options', [...questionForm.data.options, { text: '', is_correct: false }])}
-                                                className="text-[10px] font-bold text-blue-600"
+                                                className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1 mt-2"
                                             >
-                                                + Add Option
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                                                Add Option
                                             </button>
                                         </div>
                                     )}

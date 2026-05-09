@@ -12,6 +12,17 @@ class CoursePlayerController extends Controller
 {
     public function index(Course $course, Lesson $lesson = null)
     {
+        $user = auth()->user();
+        
+        // Access Control
+        $hasAccess = $user->role === \App\Enums\UserRole::ADMIN || 
+                     $course->mentor_id === $user->mentor?->id || 
+                     $user->courses()->where('course_id', $course->id)->exists();
+
+        if (!$hasAccess) {
+            return redirect()->route('courses.show', $course->id)->with('error', 'Anda belum mendaftar di kelas ini.');
+        }
+
         $course->load(['modules.lessons.completions' => function($query) {
             $query->where('user_id', auth()->id());
         }]);

@@ -8,7 +8,7 @@ export default function AuthenticatedLayout({ header, children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] dark:bg-gray-900 flex">
+        <div className="min-h-screen bg-[#F8FAFC] flex">
             <Head>
                 <link rel="icon" type="image/x-icon" href={settings.favicon} />
             </Head>
@@ -34,16 +34,16 @@ export default function AuthenticatedLayout({ header, children }) {
                 
                 {/* Header Section (Dynamic) */}
                 {header && (
-                    <header className="bg-white border-b border-gray-50">
-                        <div className="mx-auto max-w-7xl px-6 py-10 lg:px-12">
+                    <header className="bg-white border-b border-gray-100">
+                        <div className="w-full px-4 md:px-8 lg:px-12 py-8 md:py-10">
                             {header}
                         </div>
                     </header>
                 )}
 
                 {/* Page Content */}
-                <main className="flex-1 p-6 lg:p-12">
-                    <div className="max-w-7xl mx-auto">
+                <main className="flex-1 p-4 md:p-8 lg:p-12">
+                    <div className="w-full">
                         {children}
                     </div>
                 </main>

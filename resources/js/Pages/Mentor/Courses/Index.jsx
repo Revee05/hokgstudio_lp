@@ -50,7 +50,7 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
         }
     };
 
-    const selectClasses = "text-xs font-bold bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 rounded-xl focus:ring-[#FF7A00] focus:border-[#FF7A00]";
+    const selectClasses = "text-xs font-bold bg-white border-gray-100 rounded-xl focus:ring-[#FF7A00] focus:border-[#FF7A00]";
 
     return (
         <AuthenticatedLayout
@@ -58,7 +58,7 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
             header={
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <h2 className="text-2xl font-extrabold leading-tight text-gray-900 dark:text-gray-100">
+                        <h2 className="text-2xl font-extrabold leading-tight text-gray-900">
                             Kelas Saya
                         </h2>
                         <p className="text-sm text-gray-500 mt-1">Kelola produk digital dan aktivitas Anda.</p>
@@ -74,16 +74,16 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
         >
             <Head title="Manajemen Kelas" />
 
-            <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
+            <div className="py-8 space-y-6">
                 {/* Filter Bar */}
-                <div className="bg-white dark:bg-gray-900 p-4 rounded-3xl shadow-sm border border-gray-50 dark:border-gray-800">
+                <div className="bg-white p-4 rounded-3xl shadow-sm border border-gray-50">
                     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
                         {/* Search */}
                         <div className="lg:col-span-1">
                             <input
                                 type="text"
                                 placeholder="Cari judul..."
-                                className="w-full text-xs font-bold bg-gray-50 dark:bg-gray-800 border-none rounded-xl focus:ring-[#FF7A00]"
+                                className="w-full text-xs font-bold bg-gray-50 border-none rounded-xl focus:ring-[#FF7A00]"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -151,11 +151,11 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
 
                 {/* Courses Section */}
                 {courses.data.length === 0 ? (
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-3xl p-12 text-center border border-dashed border-gray-200 dark:border-gray-700">
+                    <div className="bg-white overflow-hidden shadow-sm rounded-3xl p-12 text-center border border-dashed border-gray-200">
                         <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 text-[#FF7A00]">
                             <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Belum Ada Kelas</h3>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">Belum Ada Kelas</h3>
                         <p className="text-gray-500 mb-8 max-w-md mx-auto">Anda belum membuat kelas apapun. Mulai berbagi ilmu Anda sekarang!</p>
                         <Link href={route('mentor.courses.create')} className="text-[#FF7A00] font-bold hover:underline">
                             Buat kelas pertama &rarr;
@@ -165,7 +165,7 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
                     <>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {courses.data.map((course) => (
-                                <div key={course.id} className="bg-white dark:bg-gray-800 rounded-[2rem] shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden group hover:shadow-lg transition-all duration-300 flex flex-col">
+                                <div key={course.id} className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden group hover:shadow-lg transition-all duration-300 flex flex-col">
                                     <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
                                         {course.thumbnail_url ? (
                                             <img src={course.thumbnail_url} alt={course.title} className="w-full h-full object-cover" />
@@ -198,8 +198,8 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
                                     </div>
 
                                     <div className="p-5 flex-1 flex flex-col">
-                                        <h3 className="text-base font-black text-gray-900 dark:text-white mb-2 line-clamp-1">{course.title}</h3>
-                                        <p className="text-[11px] text-gray-500 dark:text-gray-400 mb-3 line-clamp-2 h-8">{course.description}</p>
+                                        <h3 className="text-base font-black text-gray-900 mb-2 line-clamp-1">{course.title}</h3>
+                                        <p className="text-[11px] text-gray-500 mb-3 line-clamp-2 h-8">{course.description}</p>
 
                                         {/* Compact Schedule */}
                                         {course.type === 'activity' && (
@@ -215,14 +215,14 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
                                             </div>
                                         )}
 
-                                        <div className="mt-auto pt-4 border-t border-gray-50 dark:border-gray-700 flex items-center justify-between">
+                                        <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
                                             <div className="flex flex-col">
                                                 <div className="flex items-center gap-1.5 mb-1">
                                                     <div className="w-4 h-4 rounded-full bg-gray-100 flex items-center justify-center">
                                                         <svg className="w-2.5 h-2.5 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                                                     </div>
-                                                    <span className="text-[9px] font-bold text-gray-400 dark:text-gray-500 mr-1">Mentor:</span>
-                                                    <span className="text-[9px] font-bold text-gray-600 dark:text-gray-300 truncate max-w-[80px]">
+                                                    <span className="text-[9px] font-bold text-gray-400 mr-1">Mentor:</span>
+                                                    <span className="text-[9px] font-bold text-gray-600 truncate max-w-[80px]">
                                                         {course.mentor?.name || 'Mentor'}
                                                     </span>
                                                 </div>
@@ -271,7 +271,7 @@ export default function Index({ auth, courses, categories = [], filters = {} }) 
                                         className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                                             link.active
                                                 ? 'bg-[#FF7A00] text-white'
-                                                : 'bg-white dark:bg-gray-800 text-gray-500 hover:bg-orange-50 hover:text-[#FF7A00] border border-gray-100 dark:border-gray-700'
+                                                : 'bg-white text-gray-500 hover:bg-orange-50 hover:text-[#FF7A00] border border-gray-100'
                                         } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     />
                                 ))}

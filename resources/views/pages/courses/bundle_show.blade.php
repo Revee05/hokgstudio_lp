@@ -25,7 +25,7 @@
 
                 <!-- Right Column: Sidebar -->
                 <div class="lg:col-span-1">
-                    @include('pages.courses.sections.sidebar_enroll', ['course' => (object)['price' => $bundle->price]])
+                    @include('pages.courses.sections.sidebar_enroll', ['payable' => $bundle, 'type' => 'bundle'])
                 </div>
             </div>
         </div>

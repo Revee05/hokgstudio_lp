@@ -33,6 +33,16 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(LessonCompletion::class);
     }
 
+    public function bundles(): BelongsToMany
+    {
+        return $this->belongsToMany(CourseBundle::class, 'course_bundle_user')->withTimestamps();
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     public function mentor(): HasOne
     {
         return $this->hasOne(Mentor::class);

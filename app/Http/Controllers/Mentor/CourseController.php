@@ -14,7 +14,17 @@ class CourseController extends Controller
 {
     public function index(Request $request)
     {
-        $query = $request->user()->mentor->courses()
+        $mentor = $request->user()->mentor;
+
+        if (!$mentor) {
+            return Inertia::render('Mentor/Courses/Index', [
+                'courses' => new \Illuminate\Pagination\LengthAwarePaginator([], 0, 12),
+                'categories' => CourseCategory::orderBy('name')->get(),
+                'filters' => $request->only(['search', 'type', 'mode', 'category_id', 'time_status', 'status']),
+            ]);
+        }
+
+        $query = $mentor->courses()
             ->with(['categories', 'mentor']);
 
         // Search

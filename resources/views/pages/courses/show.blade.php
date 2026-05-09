@@ -16,7 +16,7 @@
 
                 <!-- Right Column: Sidebar / Enroll -->
                 <div class="lg:col-span-1">
-                    @include('pages.courses.sections.sidebar_enroll')
+                    @include('pages.courses.sections.sidebar_enroll', ['payable' => $course, 'type' => 'course'])
                 </div>
             </div>
         </div>

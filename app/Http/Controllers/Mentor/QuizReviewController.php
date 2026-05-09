@@ -24,7 +24,7 @@ class QuizReviewController extends Controller
 
     public function show(QuizAttempt $attempt)
     {
-        $attempt->load(['user', 'quiz.questions.options', 'answers.question']);
+        $attempt->load(['user', 'quiz.questions.options', 'answers.question', 'answers.option']);
 
         return Inertia::render('Mentor/Quizzes/Show', [
             'attempt' => $attempt

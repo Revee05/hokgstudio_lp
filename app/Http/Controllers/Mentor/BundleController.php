@@ -15,6 +15,13 @@ class BundleController extends Controller
     public function index(Request $request)
     {
         $mentor = $request->user()->mentor;
+
+        if (!$mentor) {
+            return Inertia::render('Mentor/Bundles/Index', [
+                'bundles' => new \Illuminate\Pagination\LengthAwarePaginator([], 0, 12),
+            ]);
+        }
+
         $bundles = $mentor->bundles()
             ->with(['courses', 'categories'])
             ->latest()
@@ -28,7 +35,7 @@ class BundleController extends Controller
     public function create(Request $request)
     {
         $mentor = $request->user()->mentor;
-        $courses = $mentor->courses()->select('id', 'title', 'type')->get();
+        $courses = $mentor ? $mentor->courses()->select('id', 'title', 'type')->get() : collect();
         $categories = BundleCategory::orderBy('name')->get();
 
         return Inertia::render('Mentor/Bundles/Form', [
@@ -84,7 +91,7 @@ class BundleController extends Controller
     public function edit(Request $request, CourseBundle $bundle)
     {
         $mentor = $request->user()->mentor;
-        $courses = $mentor->courses()->select('id', 'title', 'type')->get();
+        $courses = $mentor ? $mentor->courses()->select('id', 'title', 'type')->get() : collect();
         $categories = BundleCategory::orderBy('name')->get();
 
         return Inertia::render('Mentor/Bundles/Form', [

@@ -16,16 +16,12 @@ use Inertia\Inertia;
 
 // home
 Route::get('/', function () {
-    //     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
-// Route::get('/', function () {
+    if (request()->header('X-Inertia')) {
+        return response('', 409)
+            ->header('X-Inertia-Location', url('/'));
+    }
     return view('pages.home.index');
-});
+})->name('home');
 
 // tentang kami
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
@@ -37,6 +33,13 @@ Route::get('/mentor', [MentorController::class, 'index'])->name('mentor.index');
 Route::get('/courses', [\App\Http\Controllers\CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course}', [\App\Http\Controllers\CourseController::class, 'show'])->name('courses.show');
 Route::get('/bundles/{bundle}', [\App\Http\Controllers\CourseController::class, 'showBundle'])->name('bundles.show');
+
+// enrollment
+Route::post('/enroll/course/{course}', [\App\Http\Controllers\EnrollmentController::class, 'enrollCourse'])->name('enroll.course');
+Route::post('/enroll/bundle/{bundle}', [\App\Http\Controllers\EnrollmentController::class, 'enrollBundle'])->name('enroll.bundle');
+
+// webhooks
+Route::post('/webhooks/xendit', [\App\Http\Controllers\EnrollmentController::class, 'handleWebhook']);
 
 // authenticated dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])
